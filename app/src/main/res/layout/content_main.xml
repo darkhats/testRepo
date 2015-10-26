@@ -28,18 +28,15 @@
 
             <Button
                 android:id="@+id/settings"
-                android:layout_width="40sp"
-                android:layout_height="40sp"
-                android:background="@drawable/menu"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="8dp" />
+                android:layout_width="56sp"
+                android:layout_height="56sp"
+                android:background="@drawable/menu" />
 
             <ImageView
                 android:id="@+id/prevMonth"
-                android:layout_width="20sp"
-                android:layout_height="fill_parent"
+                android:layout_width="56sp"
+                android:layout_height="56sp"
                 android:layout_gravity="center"
-                android:layout_marginLeft="10sp"
                 android:src="@drawable/left_arrow" >
             </ImageView>
 
@@ -55,20 +52,17 @@
 
             <ImageView
                 android:id="@+id/nextMonth"
-                android:layout_width="20sp"
-                android:layout_height="fill_parent"
+                android:layout_width="56sp"
+                android:layout_height="56sp"
                 android:layout_gravity="center"
-                android:layout_marginRight="10sp"
                 android:src="@drawable/right_arrow" >
             </ImageView>
 
             <Button
                 android:id="@+id/addEvent"
-                android:layout_width="40sp"
-                android:layout_height="40sp"
-                android:background="@drawable/plus"
-                android:layout_marginBottom="8dp"
-                android:layout_marginRight="8dp" />
+                android:layout_width="56sp"
+                android:layout_height="56sp"
+                android:background="@drawable/add" />
         </LinearLayout>
 
         <Button
@@ -89,7 +83,7 @@
             <ImageView
                 android:id="@+id/calendarheader"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="38dp"
                 android:layout_gravity="center"
                 android:src="@drawable/calendar_days"
                 android:baselineAlignBottom="false">

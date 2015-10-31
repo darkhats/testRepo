@@ -115,8 +115,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             } else {
                 month--;
             }
-            Log.d(tag, "Setting Prev Month in GridCellAdapter: " + "Month: "
-            + month + " Year: " + year);
+            Log.d(tag, "Setting Prev Month in GridCellAdapter: " + "Month: " + month + " Year: " + year);
             setGridCellAdapterToDate(month, year);
         }
         if (v == nextMonth) {
@@ -126,8 +125,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             } else {
                 month++;
             }
-            Log.d(tag, "Setting Next Month in GridCellAdapter: " + "Month: "
-            + month + " Year: " + year);
+            Log.d(tag, "Setting Next Month in GridCellAdapter: " + "Month: " + month + " Year: " + year);
             setGridCellAdapterToDate(month, year);
         }
 

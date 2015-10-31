@@ -14,6 +14,8 @@ import android.view.View.OnClickListener;
 public class add_event extends AppCompatActivity{
 
     private Button backToCalendar;
+    private Button selectedDateButton;
+    private Button selectedTimeButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +23,22 @@ public class add_event extends AppCompatActivity{
         setContentView(R.layout.activity_add_event);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        selectedDateButton = (Button) this.findViewById(R.id.selectedDate);
+        selectedDateButton.setText("Date: ");
+        selectedDateButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startActivity(new Intent(add_event.this, set_date.class));
+            }
+        });
+
+        selectedTimeButton = (Button) this.findViewById(R.id.selectedTime);
+        selectedTimeButton.setText("Time: ");
+        selectedTimeButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startActivity(new Intent(add_event.this, set_time.class));
+            }
+        });
 
         backToCalendar = (Button) this.findViewById(R.id.backToCalendar);
         backToCalendar.setOnClickListener(new View.OnClickListener() {

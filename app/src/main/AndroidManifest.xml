@@ -23,6 +23,16 @@
             android:label="@string/add_event"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
+        <activity
+            android:name=".set_time"
+            android:label="@string/title_activity_set_time"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".set_date"
+            android:label="@string/title_activity_set_date"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>

@@ -10,4 +10,5 @@
     <color name="lightgreen">#336666</color>
     <color name="orange">#e33d1b</color>
     <color name="white">#FFF</color>
+    <color name="black">#000</color>
 </resources>

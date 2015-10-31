@@ -9,19 +9,34 @@
     tools:context=".add_event"
     android:background="@color/lightgray">
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/week_scroll_view">
-
-        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <TableLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/weekTableLayout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@color/lightgray"
-            android:padding="5dip">
+            android:padding="5dip"
+            android:stretchColumns="1,2">
 
-            <!-- Date -->
+            <!-- Title -->
+            <TableRow
+                android:id="@+id/add_event_title_row"
+                android:layout_width="fill_parent"
+                android:layout_height="50dip"
+                android:padding="0dip"
+                android:background="@color/lightgray">
+                <TextView
+                    android:id="@+id/add_event_title_label"
+                    android:text="Title: "
+                    style="@style/add_event_col"/>
+                <EditText
+                    android:layout_weight="2"
+                    android:id="@+id/add_event_title_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </TableRow>
+
+            <!-- Start Date -->
             <TableRow
                 android:id="@+id/add_event_date_row"
                 android:layout_width="fill_parent"
@@ -31,20 +46,28 @@
                 <TextView
                     android:id="@+id/add_event_date_label"
                     android:text="Date:"
-                    android:layout_width="wrap_content"
                     style="@style/add_event_col"/>
                 <Button
-                    android:id="@+id/selectedDate"
-                    android:layout_width="fill_parent"
+                    android:id="@+id/selectedStartDate"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:layout_width="0dip"
                     android:background="@color/darkgray"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#000">
-                </Button>
+                    android:textColor="#000"
+                    android:layout_margin="2dip" />
+                <Button
+                    android:id="@+id/selectedEndDate"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dip"
+                    android:background="@color/darkgray"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#000"
+                    android:layout_margin="2dip" />
             </TableRow>
 
-            <!-- Time -->
+            <!-- Start Time -->
             <TableRow
                 android:id="@+id/add_event_time_row"
                 android:layout_width="fill_parent"
@@ -56,32 +79,25 @@
                     android:text="Time:"
                     style="@style/add_event_col" />
                 <Button
-                    android:id="@+id/selectedTime"
-                    android:layout_width="fill_parent"
+                    android:id="@+id/selectedStartTime"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:layout_width="0dip"
                     android:background="@color/darkgray"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#000">
+                    android:textColor="#000"
+                    android:layout_margin="2dip">
                 </Button>
-            </TableRow>
-
-            <!-- Duration -->
-            <TableRow
-                android:id="@+id/add_event_duration_row"
-                android:layout_width="fill_parent"
-                android:layout_height="50dip"
-                android:padding="0dip"
-                android:background="@color/lightgray">
-                <TextView
-                    android:id="@+id/add_event_duration_label"
-                    android:text="Duration:"
-                    style="@style/add_event_col" />
-                <EditText
-                    android:id="@+id/add_event_duration_edit"
-                    android:layout_width="wrap_content"
+                <Button
+                    android:id="@+id/selectedEndTime"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:ems="8"/>
+                    android:layout_width="0dip"
+                    android:background="@color/darkgray"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#000"
+                    android:layout_margin="2dip">
+                </Button>
             </TableRow>
 
             <!-- Location -->
@@ -96,6 +112,7 @@
                     android:text="Location: "
                     style="@style/add_event_col" />
                 <EditText
+                    android:layout_weight="2"
                     android:id="@+id/add_event_location_edit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -113,9 +130,28 @@
                     android:text="Description: "
                     style="@style/add_event_col"/>
                 <EditText
+                    android:layout_weight="2"
                     android:id="@+id/add_event_description_edit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
+            </TableRow>
+
+            <!-- Periodic? -->
+            <TableRow
+                android:id="@+id/add_event_repetition_row"
+                android:layout_width="fill_parent"
+                android:layout_height="50dip"
+                android:padding="0dip"
+                android:background="@color/lightgray">
+
+                <CheckBox
+                    android:layout_weight="1"
+                    android:id="@+id/chkWindows"
+                    android:layout_width="0dip"
+                    android:layout_height="50dip"
+                    android:text="Repeating Event?"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="100dip" />
             </TableRow>
 
             <!-- Save Button -->
@@ -129,7 +165,8 @@
                 android:layout_weight="1"
                 android:background="@color/darkgray"
                 android:layout_marginLeft="2dip"
-                android:layout_marginRight="2dip">
+                android:layout_marginRight="2dip"
+                android:layout_marginTop="20dip">
             </Button>
 
             <!-- Cancel Button -->
@@ -140,9 +177,10 @@
                 android:layout_height="60dip"
                 android:background="@color/darkgray"
                 android:layout_marginLeft="2dip"
-                android:layout_marginRight="2dip">
+                android:layout_marginRight="2dip"
+                android:layout_marginTop="5dip">
             </Button>
 
         </TableLayout>
-    </ScrollView>
+
 </RelativeLayout>

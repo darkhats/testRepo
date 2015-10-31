@@ -10,6 +10,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.view.View.OnClickListener;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Bundle;
+import android.database.sqlite.*;
+import android.app.Activity;
+import android.view.*;
+import android.content.*;
 
 public class add_event extends AppCompatActivity{
 
@@ -46,6 +54,12 @@ public class add_event extends AppCompatActivity{
                 startActivity(new Intent(add_event.this, MainActivity.class));
             }
         });
+
+        DatabaseHelper mDbHelper = new DatabaseHelper(this);
+        ContentValues values = new ContentValues();
+        //  values.put(DatabaseHelper.TITLE, id);
+
+
     }
 
 }

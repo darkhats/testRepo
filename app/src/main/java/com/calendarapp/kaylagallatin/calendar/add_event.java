@@ -14,8 +14,11 @@ import android.view.View.OnClickListener;
 public class add_event extends AppCompatActivity{
 
     private Button backToCalendar;
-    private Button selectedDateButton;
-    private Button selectedTimeButton;
+    private Button selectedStartDateButton;
+    private Button selectedStartTimeButton;
+    private Button selectedEndDateButton;
+    private Button selectedEndTimeButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,17 +27,33 @@ public class add_event extends AppCompatActivity{
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        selectedDateButton = (Button) this.findViewById(R.id.selectedDate);
-        selectedDateButton.setText("Date: ");
-        selectedDateButton.setOnClickListener(new View.OnClickListener() {
+        selectedStartDateButton = (Button) this.findViewById(R.id.selectedStartDate);
+        selectedStartDateButton.setText("Start");
+        selectedStartDateButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 startActivity(new Intent(add_event.this, set_date.class));
             }
         });
 
-        selectedTimeButton = (Button) this.findViewById(R.id.selectedTime);
-        selectedTimeButton.setText("Time: ");
-        selectedTimeButton.setOnClickListener(new View.OnClickListener() {
+        selectedEndDateButton = (Button) this.findViewById(R.id.selectedEndDate);
+        selectedEndDateButton.setText("End");
+        selectedEndDateButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startActivity(new Intent(add_event.this, set_date.class));
+            }
+        });
+
+        selectedStartTimeButton = (Button) this.findViewById(R.id.selectedStartTime);
+        selectedStartTimeButton.setText("Start");
+        selectedStartTimeButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startActivity(new Intent(add_event.this, set_time.class));
+            }
+        });
+
+        selectedEndTimeButton = (Button) this.findViewById(R.id.selectedEndTime);
+        selectedEndTimeButton.setText("End");
+        selectedEndTimeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 startActivity(new Intent(add_event.this, set_time.class));
             }

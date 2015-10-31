@@ -289,19 +289,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         private HashMap<String, Integer> findNumberOfEventsPerMonth(int year, int month) {
             HashMap<String, Integer> map = new HashMap<String, Integer>();
 
-            // DateFormat dateFormatter2 = new DateFormat();
-            //
-            // String day = dateFormatter2.format("dd", dateCreated).toString();
-            //
-            // if (map.containsKey(day))
-            // {
-            // Integer val = (Integer) map.get(day) + 1;
-            // map.put(day, val);
-            // }
-            // else
-            // {
-            // map.put(day, 1);
-            // }
+
 
             return map;
         }

@@ -36,6 +36,8 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements OnClickListener {
     private static final String tag = "MyCalendarActivity";
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     private TextView currentMonth;
     private Button selectedDayMonthYearButton;
     private Button addEventButton;
+    private Button menuButton;
     private ImageView prevMonth;
     private ImageView nextMonth;
     private GridView calendarView;
@@ -70,8 +73,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         selectedDayMonthYearButton.setText("");
 
         addEventButton = (Button) this.findViewById(R.id.addEvent);
-        addEventButton.setOnClickListener(new OnClickListener(){
-            public void onClick(View v){
+        addEventButton.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, add_event.class));
             }
         });
@@ -93,6 +96,26 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 R.id.calendar_day_gridcell, month, year);
         adapter.notifyDataSetChanged();
         calendarView.setAdapter(adapter);
+
+        menuButton = (Button) findViewById(R.id.menu);
+        menuButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu(MainActivity.this, menuButton);
+                popup.getMenuInflater().inflate(R.menu.views_menu, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if (item.getTitle().equals("Daily View")) {
+                            startActivity(new Intent(MainActivity.this, daily_view.class));
+                        } else if (item.getTitle().equals("Weekly View")) {
+                            startActivity(new Intent(MainActivity.this, weekly_view.class));
+                        }
+                        return true;
+                    }
+                });
+                popup.show();
+            }
+        });
     }
 
 

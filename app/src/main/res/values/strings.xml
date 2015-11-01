@@ -4,4 +4,6 @@
     <string name="add_event">Add Event</string>
     <string name="title_activity_set_time">Set Time</string>
     <string name="title_activity_set_date">Set Date</string>
+    <string name="title_activity_daily_view">daily_view</string>
+    <string name="title_activity_weekly_view">Weekly View</string>
 </resources>

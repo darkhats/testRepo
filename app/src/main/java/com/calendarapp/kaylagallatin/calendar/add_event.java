@@ -70,7 +70,7 @@ public class add_event extends AppCompatActivity{
         backToCalendar = (Button) this.findViewById(R.id.backToCalendar);
         backToCalendar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                startActivity(new Intent(add_event.this, MainActivity.class));
+                finish();
             }
         });
 

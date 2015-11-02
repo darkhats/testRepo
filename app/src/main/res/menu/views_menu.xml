@@ -8,4 +8,8 @@
         android:id="@+id/weekly_view"
         android:title="Weekly View"/>
 
+    <item
+        android:id="@+id/monthly_view"
+        android:title="Monthly View"/>
+
 </menu>

@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import android.graphics.Color;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -36,6 +37,8 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements OnClickListener {
     private static final String tag = "MyCalendarActivity";
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     private TextView currentMonth;
     private Button selectedDayMonthYearButton;
     private Button addEventButton;
+    private Button menuButton;
     private ImageView prevMonth;
     private ImageView nextMonth;
     private GridView calendarView;
@@ -63,15 +67,13 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         _calendar = Calendar.getInstance(Locale.getDefault());
         month = _calendar.get(Calendar.MONTH) + 1;
         year = _calendar.get(Calendar.YEAR);
-        Log.d(tag, "Calendar Instance:= " + "Month: " + month + " Year: "
-        + year);
 
         selectedDayMonthYearButton = (Button) this.findViewById(R.id.selectedDayMonthYear);
         selectedDayMonthYearButton.setText("");
 
         addEventButton = (Button) this.findViewById(R.id.addEvent);
-        addEventButton.setOnClickListener(new OnClickListener(){
-            public void onClick(View v){
+        addEventButton.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, add_event.class));
             }
         });
@@ -93,6 +95,32 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 R.id.calendar_day_gridcell, month, year);
         adapter.notifyDataSetChanged();
         calendarView.setAdapter(adapter);
+
+        menuButton = (Button) findViewById(R.id.menu);
+        menuButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu(MainActivity.this, menuButton);
+                popup.getMenuInflater().inflate(R.menu.views_menu, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if (item.getTitle().equals("Daily View")) {
+                            startActivity(new Intent(MainActivity.this, daily_view.class));
+                        } else if (item.getTitle().equals("Weekly View")) {
+                            startActivity(new Intent(MainActivity.this, weekly_view.class));
+                        } else {
+                            Toast.makeText(
+                                    MainActivity.this,
+                                    "Already showing " + item.getTitle(),
+                                    Toast.LENGTH_SHORT
+                            ).show();
+                        }
+                        return true;
+                    }
+                });
+                popup.show();
+            }
+        });
     }
 
 
@@ -115,7 +143,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             } else {
                 month--;
             }
-            Log.d(tag, "Setting Prev Month in GridCellAdapter: " + "Month: " + month + " Year: " + year);
             setGridCellAdapterToDate(month, year);
         }
         if (v == nextMonth) {
@@ -125,7 +152,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             } else {
                 month++;
             }
-            Log.d(tag, "Setting Next Month in GridCellAdapter: " + "Month: " + month + " Year: " + year);
             setGridCellAdapterToDate(month, year);
         }
 
@@ -162,13 +188,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             super();
             this._context = context;
             this.list = new ArrayList<String>();
-            Log.d(tag, "==> Passed in Date FOR Month: " + month + " " + "Year: " + year);
             Calendar calendar = Calendar.getInstance();
             setCurrentDayOfMonth(calendar.get(Calendar.DAY_OF_MONTH));
             setCurrentWeekDay(calendar.get(Calendar.DAY_OF_WEEK));
-            Log.d(tag, "New Calendar:= " + calendar.getTime().toString());
-            Log.d(tag, "CurrentDayOfWeek :" + getCurrentWeekDay());
-            Log.d(tag, "CurrentDayOfMonth :" + getCurrentDayOfMonth());
 
             // Print Month
             printMonth(month, year);
@@ -200,7 +222,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
 
         private void printMonth(int mm, int yy) {
-            Log.d(tag, "==> printMonth: mm: " + mm + " " + "yy: " + yy);
             int trailingSpaces = 0;
             int daysInPrevMonth = 0;
             int prevMonth = 0;
@@ -212,10 +233,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             String currentMonthName = getMonthAsString(currentMonth);
             daysInMonth = getNumberOfDaysOfMonth(currentMonth);
 
-            Log.d(tag, "Current Month: " + " " + currentMonthName + " having " + daysInMonth + " days.");
-
             GregorianCalendar cal = new GregorianCalendar(yy, currentMonth, 1);
-            Log.d(tag, "Gregorian Calendar:= " + cal.getTime().toString());
 
             if (currentMonth == 11) {
                 prevMonth = currentMonth - 1;
@@ -223,29 +241,22 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 nextMonth = 0;
                 prevYear = yy;
                 nextYear = yy + 1;
-                Log.d(tag, "*->PrevYear: " + prevYear + " PrevMonth:" + prevMonth + " NextMonth: " + nextMonth + " NextYear: " + nextYear);
             } else if (currentMonth == 0) {
                 prevMonth = 11;
                 prevYear = yy - 1;
                 nextYear = yy;
                 daysInPrevMonth = getNumberOfDaysOfMonth(prevMonth);
                 nextMonth = 1;
-                Log.d(tag, "**-> PrevYear: " + prevYear + " PrevMonth:" + prevMonth + " NextMonth: " + nextMonth + " NextYear: " + nextYear);
             } else {
                 prevMonth = currentMonth - 1;
                 nextMonth = currentMonth + 1;
                 nextYear = yy;
                 prevYear = yy;
                 daysInPrevMonth = getNumberOfDaysOfMonth(prevMonth);
-                Log.d(tag, "***-> PrevYear: " + prevYear + " PrevMonth:" + prevMonth + " NextMonth: " + nextMonth + " NextYear: " + nextYear);
             }
 
             int currentWeekDay = cal.get(Calendar.DAY_OF_WEEK) - 1;
             trailingSpaces = currentWeekDay;
-
-            Log.d(tag, "Week Day:" + currentWeekDay + " is " + getWeekDayAsString(currentWeekDay));
-            Log.d(tag, "No. Trailing space to Add: " + trailingSpaces);
-            Log.d(tag, "No. of Days in Previous Month: " + daysInPrevMonth);
 
             if (cal.isLeapYear(cal.get(Calendar.YEAR)))
                 if (mm == 2)
@@ -255,13 +266,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
             // Trailing Month days
             for (int i = 0; i < trailingSpaces; i++) {
-                Log.d(tag, "PREV MONTH:= " + prevMonth + " => " + getMonthAsString(prevMonth) + " " + String.valueOf((daysInPrevMonth - trailingSpaces + DAY_OFFSET) + i));
                 list.add(String.valueOf((daysInPrevMonth - trailingSpaces + DAY_OFFSET) + i) + "-GREY" + "-" + getMonthAsString(prevMonth) + "-" + prevYear);
             }
 
             // Current Month Days
             for (int i = 1; i <= daysInMonth; i++) {
-                Log.d(currentMonthName, String.valueOf(i) + " " + getMonthAsString(currentMonth) + " " + yy);
                 if (i == getCurrentDayOfMonth()) {
                     list.add(String.valueOf(i) + "-BLUE" + "-" + getMonthAsString(currentMonth) + "-" + yy);
                 } else {
@@ -271,7 +280,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
             // Leading Month days
             for (int i = 0; i < list.size() % 7; i++) {
-                Log.d(tag, "NEXT MONTH:= " + getMonthAsString(nextMonth));
                 list.add(String.valueOf(i + 1) + "-GREY" + "-" + getMonthAsString(nextMonth) + "-" + nextYear);
             }
         }
@@ -312,7 +320,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             gridcell.setOnClickListener(this);
 
             // ACCOUNT FOR SPACING
-            Log.d(tag, "Current Day: " + getCurrentDayOfMonth());
             String[] day_color = list.get(position).split("-");
             String theday = day_color[0];
             String themonth = day_color[2];
@@ -328,7 +335,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             // Set the Day GridCell
             gridcell.setText(theday);
             gridcell.setTag(theday + "-" + themonth + "-" + theyear);
-            Log.d(tag, "Setting GridCell " + theday + "-" + themonth + "-" + theyear);
 
             if (day_color[1].equals("GREY")) {
                 gridcell.setTextColor(getResources().getColor(R.color.lightgray));
@@ -345,12 +351,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
         @Override
         public void onClick(View view) {
+            calendarView.invalidateViews();
             String date_month_year = (String) view.getTag();
             selectedDayMonthYearButton.setText("Selected: " + date_month_year);
-            Log.e("Selected date", date_month_year);
             try {
                 Date parsedDate = dateFormatter.parse(date_month_year);
-                Log.d(tag, "Parsed Date: " + parsedDate.toString());
             } catch (ParseException e) {
                 e.printStackTrace();
             }

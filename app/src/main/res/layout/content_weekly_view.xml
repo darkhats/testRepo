@@ -5,8 +5,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_main"
-    tools:context=".MainActivity"
+    tools:showIn="@layout/activity_weekly_view"
+    tools:context=".weekly_view"
     android:background="@color/lightgray">
 
     <LinearLayout
@@ -33,7 +33,7 @@
                 android:background="@drawable/menu" />
 
             <ImageView
-                android:id="@+id/prevMonth"
+                android:id="@+id/prevWeek"
                 android:layout_width="56sp"
                 android:layout_height="56sp"
                 android:layout_gravity="center"
@@ -41,7 +41,7 @@
             </ImageView>
 
             <TextView
-                android:id="@+id/currentMonth"
+                android:id="@+id/currentWeek"
                 android:layout_width="fill_parent"
                 android:layout_height="60sp"
                 android:layout_weight="0.6"
@@ -51,7 +51,7 @@
             </TextView>
 
             <ImageView
-                android:id="@+id/nextMonth"
+                android:id="@+id/nextWeek"
                 android:layout_width="56sp"
                 android:layout_height="56sp"
                 android:layout_gravity="center"
@@ -98,4 +98,5 @@
         </Button>
 
     </LinearLayout>
+
 </RelativeLayout>

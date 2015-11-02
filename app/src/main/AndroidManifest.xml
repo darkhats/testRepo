@@ -4,7 +4,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/main_icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
@@ -31,6 +31,26 @@
         <activity
             android:name=".set_date"
             android:label="@string/title_activity_set_date"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".daily_view"
+            android:label="@string/title_activity_daily_view"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".weekly_view"
+            android:label="@string/title_activity_weekly_view"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".view_event"
+            android:label="@string/title_activity_view_event"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".edit_event"
+            android:label="@string/title_activity_edit_event"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
     </application>

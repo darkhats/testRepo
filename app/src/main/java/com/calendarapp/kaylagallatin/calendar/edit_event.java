@@ -1,6 +1,6 @@
 package com.calendarapp.kaylagallatin.calendar;
 
-import android.content.DialogInterface;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -9,17 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.view.View.OnClickListener;
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Bundle;
-import android.database.sqlite.*;
-import android.app.Activity;
-import android.view.*;
-import android.content.*;
 
-public class add_event extends AppCompatActivity{
+public class edit_event extends AppCompatActivity {
 
     private Button backToCalendar;
     private Button selectedStartDateButton;
@@ -27,11 +18,10 @@ public class add_event extends AppCompatActivity{
     private Button selectedEndDateButton;
     private Button selectedEndTimeButton;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_event);
+        setContentView(R.layout.activity_edit_event);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -39,7 +29,7 @@ public class add_event extends AppCompatActivity{
         selectedStartDateButton.setText("Start");
         selectedStartDateButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                startActivity(new Intent(add_event.this, set_date.class));
+                startActivity(new Intent(edit_event.this, set_date.class));
             }
         });
 
@@ -47,7 +37,7 @@ public class add_event extends AppCompatActivity{
         selectedEndDateButton.setText("End");
         selectedEndDateButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                startActivity(new Intent(add_event.this, set_date.class));
+                startActivity(new Intent(edit_event.this, set_date.class));
             }
         });
 
@@ -55,7 +45,7 @@ public class add_event extends AppCompatActivity{
         selectedStartTimeButton.setText("Start");
         selectedStartTimeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                startActivity(new Intent(add_event.this, set_time.class));
+                startActivity(new Intent(edit_event.this, set_time.class));
             }
         });
 
@@ -63,7 +53,7 @@ public class add_event extends AppCompatActivity{
         selectedEndTimeButton.setText("End");
         selectedEndTimeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                startActivity(new Intent(add_event.this, set_time.class));
+                startActivity(new Intent(edit_event.this, set_time.class));
             }
         });
 

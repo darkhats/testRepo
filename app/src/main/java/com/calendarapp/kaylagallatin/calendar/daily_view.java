@@ -21,8 +21,6 @@ import java.util.Locale;
 public class daily_view extends AppCompatActivity implements OnClickListener{
 
     private Button menuButton;
-    private Button eventButton;
-    private Button addEventButton;
     private Calendar calendar;
     private static final String dateTemplate = "c \nMMM d yyyy";
     private TextView currentDay;
@@ -52,7 +50,7 @@ public class daily_view extends AppCompatActivity implements OnClickListener{
         nextDay = (ImageView) this.findViewById(R.id.nextDay);
         nextDay.setOnClickListener(this);
 
-        eventButton = (Button) this.findViewById(R.id.view_event_button);
+        Button eventButton = (Button) this.findViewById(R.id.view_event_button);
         setButtonText(eventButton, "Temp Placeholder");
         eventButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -60,7 +58,7 @@ public class daily_view extends AppCompatActivity implements OnClickListener{
             }
         });
 
-        addEventButton = (Button) this.findViewById(R.id.addEvent);
+        Button addEventButton = (Button) this.findViewById(R.id.addEvent);
         addEventButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 startActivity(new Intent(daily_view.this, add_event.class));

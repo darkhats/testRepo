@@ -47,7 +47,8 @@
                 android:layout_weight="0.6"
                 android:gravity="center"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="#FFFFFF" >
+                android:textColor="#FFFFFF"
+                android:textSize="15dp">
             </TextView>
 
             <ImageView
@@ -84,11 +85,13 @@
             android:id="@+id/calendar"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:numColumns="7">
+            android:numColumns="7"
+            android:background="@color/white"
+            android:textAlignment="center">
         </GridView>
 
         <Button
-            android:id="@+id/selectedDayMonthYear"
+            android:id="@+id/view_event_button"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -96,7 +99,6 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#000">
         </Button>
-
     </LinearLayout>
 
 </RelativeLayout>

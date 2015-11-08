@@ -11,18 +11,25 @@ import android.view.View;
 import android.widget.Button;
 import android.view.View.OnClickListener;
 import android.content.Context;
+<<<<<<< HEAD
 import android.database.*;
+=======
+import android.database.sqlite.SQLiteDatabase;
+>>>>>>> 0135994114fb6601e02537281464cda23a3a24f8
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.database.sqlite.*;
 import android.app.Activity;
 import android.view.*;
 import android.content.*;
+<<<<<<< HEAD
 import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+=======
+>>>>>>> 0135994114fb6601e02537281464cda23a3a24f8
 
 public class add_event extends AppCompatActivity{
 
@@ -31,11 +38,15 @@ public class add_event extends AppCompatActivity{
     private Button selectedStartTimeButton;
     private Button selectedEndDateButton;
     private Button selectedEndTimeButton;
+<<<<<<< HEAD
     private Button selectedSaveButton;
     public static TimePicker startTime;
     public static TimePicker endTime;
     public static boolean isStartTime;
     public static SQLiteDatabase db;
+=======
+
+>>>>>>> 0135994114fb6601e02537281464cda23a3a24f8
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +76,10 @@ public class add_event extends AppCompatActivity{
         selectedStartTimeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 startActivity(new Intent(add_event.this, set_time.class));
+<<<<<<< HEAD
                 isStartTime = true;
+=======
+>>>>>>> 0135994114fb6601e02537281464cda23a3a24f8
             }
         });
 
@@ -74,6 +88,7 @@ public class add_event extends AppCompatActivity{
         selectedEndTimeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 startActivity(new Intent(add_event.this, set_time.class));
+<<<<<<< HEAD
                 isStartTime = false;
             }
         });
@@ -90,6 +105,11 @@ public class add_event extends AppCompatActivity{
 
 
 
+=======
+            }
+        });
+
+>>>>>>> 0135994114fb6601e02537281464cda23a3a24f8
         backToCalendar = (Button) this.findViewById(R.id.backToCalendar);
         backToCalendar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -97,6 +117,7 @@ public class add_event extends AppCompatActivity{
             }
         });
 
+<<<<<<< HEAD
 
 
 
@@ -139,4 +160,13 @@ public class add_event extends AppCompatActivity{
                 Log.d("Item: ",cur.getString(k));
 
     }
+=======
+        DatabaseHelper mDbHelper = new DatabaseHelper(this);
+        ContentValues values = new ContentValues();
+        //  values.put(DatabaseHelper.TITLE, id);
+
+
+    }
+
+>>>>>>> 0135994114fb6601e02537281464cda23a3a24f8
 }

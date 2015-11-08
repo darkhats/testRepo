@@ -64,9 +64,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+<<<<<<< HEAD
         DatabaseHelper mDbHelper = new DatabaseHelper(this);
         add_event.db = mDbHelper.getWritableDatabase();
 
+=======
+>>>>>>> 0135994114fb6601e02537281464cda23a3a24f8
         _calendar = Calendar.getInstance(Locale.getDefault());
         month = _calendar.get(Calendar.MONTH) + 1;
         year = _calendar.get(Calendar.YEAR);

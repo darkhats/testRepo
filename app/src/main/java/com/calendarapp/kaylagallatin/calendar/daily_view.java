@@ -2,8 +2,11 @@ package com.calendarapp.kaylagallatin.calendar;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+<<<<<<< HEAD
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+=======
+>>>>>>> 0135994114fb6601e02537281464cda23a3a24f8
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,13 +14,20 @@ import android.text.format.DateFormat;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+<<<<<<< HEAD
 import android.widget.EditText;
+=======
+>>>>>>> 0135994114fb6601e02537281464cda23a3a24f8
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View.OnClickListener;
+<<<<<<< HEAD
 import android.util.Log;
+=======
+
+>>>>>>> 0135994114fb6601e02537281464cda23a3a24f8
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -29,9 +39,14 @@ public class daily_view extends AppCompatActivity implements OnClickListener{
     private TextView currentDay;
     private ImageView prevDay;
     private ImageView nextDay;
+<<<<<<< HEAD
     private Integer day, month, year;
     private final int[] monthDays = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
     public String data;
+=======
+    private int day, month, year;
+    private final int[] monthDays = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+>>>>>>> 0135994114fb6601e02537281464cda23a3a24f8
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +62,11 @@ public class daily_view extends AppCompatActivity implements OnClickListener{
         day = calendar.get(Calendar.DAY_OF_MONTH);
         month = calendar.get(Calendar.MONTH);
         year = calendar.get(Calendar.YEAR);
+<<<<<<< HEAD
         makeView();
+=======
+
+>>>>>>> 0135994114fb6601e02537281464cda23a3a24f8
         currentDay = (TextView) this.findViewById(R.id.currentDay);
         currentDay.setText(DateFormat.format(dateTemplate, calendar.getTime()));
 
@@ -128,6 +147,7 @@ public class daily_view extends AppCompatActivity implements OnClickListener{
         }
         calendar.set(year, month, day);
         currentDay.setText(DateFormat.format(dateTemplate, calendar.getTime()));
+<<<<<<< HEAD
         makeView();
         //Check for events on new day and setButtonText to event title
     }
@@ -163,4 +183,9 @@ public class daily_view extends AppCompatActivity implements OnClickListener{
 
     }
 
+=======
+        //Check for events on new day and setButtonText to event title
+    }
+
+>>>>>>> 0135994114fb6601e02537281464cda23a3a24f8
 }

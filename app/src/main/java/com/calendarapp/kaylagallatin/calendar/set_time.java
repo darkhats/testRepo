@@ -8,14 +8,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+<<<<<<< HEAD
 import android.widget.TimePicker;
 import android.util.Log;
 
+=======
+>>>>>>> 0135994114fb6601e02537281464cda23a3a24f8
 
 public class set_time extends AppCompatActivity {
 
     private Button cancelTime;
+<<<<<<< HEAD
     private Button saveButton;
+=======
+>>>>>>> 0135994114fb6601e02537281464cda23a3a24f8
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +33,7 @@ public class set_time extends AppCompatActivity {
         cancelTime = (Button) this.findViewById(R.id.cancelTimeButton);
         cancelTime.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+<<<<<<< HEAD
                 finish();
             }
         });
@@ -38,6 +45,9 @@ public class set_time extends AppCompatActivity {
                 else
                     add_event.endTime = (TimePicker)findViewById(R.id.timePicker);
                 finish();
+=======
+                startActivity(new Intent(set_time.this, add_event.class));
+>>>>>>> 0135994114fb6601e02537281464cda23a3a24f8
             }
         });
     }

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
 <module external.linked.project.id=":app" external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$/.." external.system.id="GRADLE" external.system.module.group="AndroidCalendar-master" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
+=======
+<module external.linked.project.id=":app" external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$/.." external.system.id="GRADLE" external.system.module.group="Calendar" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
+>>>>>>> 0135994114fb6601e02537281464cda23a3a24f8
   <component name="FacetManager">
     <facet type="android-gradle" name="Android-Gradle">
       <configuration>

@@ -16,8 +16,12 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="false"
+<<<<<<< HEAD
         android:background="@color/lightgray"
         android:nestedScrollingEnabled="true">
+=======
+        android:background="@color/lightgray">
+>>>>>>> 0135994114fb6601e02537281464cda23a3a24f8
 
         <LinearLayout
             android:layout_width="fill_parent"

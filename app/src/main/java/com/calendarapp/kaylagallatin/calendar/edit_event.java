@@ -9,10 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-<<<<<<< HEAD
+
 import android.widget.TimePicker;
-=======
->>>>>>> 0135994114fb6601e02537281464cda23a3a24f8
+
 
 public class edit_event extends AppCompatActivity {
 
@@ -21,11 +20,9 @@ public class edit_event extends AppCompatActivity {
     private Button selectedStartTimeButton;
     private Button selectedEndDateButton;
     private Button selectedEndTimeButton;
-<<<<<<< HEAD
     private TimePicker startTime;
     private TimePicker endTime;
-=======
->>>>>>> 0135994114fb6601e02537281464cda23a3a24f8
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

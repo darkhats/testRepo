@@ -34,6 +34,11 @@
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity
+            android:name=".delete_event"
+            android:label="@string/title_activity_activity_delete_event"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
             android:name=".daily_view"
             android:label="@string/title_activity_daily_view"
             android:theme="@style/AppTheme.NoActionBar" >
@@ -51,6 +56,11 @@
         <activity
             android:name=".edit_event"
             android:label="@string/title_activity_edit_event"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".activity_delete_event"
+            android:label="@string/title_activity_activity_delete_event"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
     </application>

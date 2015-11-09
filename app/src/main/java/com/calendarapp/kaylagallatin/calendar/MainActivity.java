@@ -1,6 +1,8 @@
 package com.calendarapp.kaylagallatin.calendar;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,6 +21,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import android.graphics.Color;
 import android.annotation.SuppressLint;
@@ -52,8 +55,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     private GridView calendarView;
     private GridCellAdapter adapter;
     private Calendar _calendar;
+    private Integer tempDayOfWeek;
     @SuppressLint("NewApi")
-    private int month, year;
+    private Integer month, year;
     @SuppressWarnings("unused")
     @SuppressLint({ "NewApi", "NewApi", "NewApi", "NewApi" })
     private final DateFormat dateFormatter = new DateFormat();
@@ -64,12 +68,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-<<<<<<< HEAD
-        DatabaseHelper mDbHelper = new DatabaseHelper(this);
-        add_event.db = mDbHelper.getWritableDatabase();
 
-=======
->>>>>>> 0135994114fb6601e02537281464cda23a3a24f8
+
         _calendar = Calendar.getInstance(Locale.getDefault());
         month = _calendar.get(Calendar.MONTH) + 1;
         year = _calendar.get(Calendar.YEAR);
@@ -114,7 +114,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                             startActivity(new Intent(MainActivity.this, daily_view.class));
                         } else if (item.getTitle().equals("Weekly View")) {
                             startActivity(new Intent(MainActivity.this, weekly_view.class));
-                        } else {
+                        }
+                        else if(item.getTitle().equals("Delete Event"))
+                            startActivity(new Intent(MainActivity.this, delete_event.class));
+                        else {
                             Toast.makeText(
                                     MainActivity.this,
                                     "Already showing " + item.getTitle(),
@@ -240,7 +243,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             daysInMonth = getNumberOfDaysOfMonth(currentMonth);
 
             GregorianCalendar cal = new GregorianCalendar(yy, currentMonth, 1);
-
+            tempDayOfWeek = cal.DAY_OF_WEEK;
             if (currentMonth == 11) {
                 prevMonth = currentMonth - 1;
                 daysInPrevMonth = getNumberOfDaysOfMonth(prevMonth);
@@ -357,14 +360,49 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
         @Override
         public void onClick(View view) {
+
             calendarView.invalidateViews();
             String date_month_year = (String) view.getTag();
-            selectedDayMonthYearButton.setText("Selected: " + date_month_year);
+            String theseEvents = viewEvents(date_month_year);
+            selectedDayMonthYearButton.setText("Selected: " + date_month_year + "\n" + theseEvents);
             try {
                 Date parsedDate = dateFormatter.parse(date_month_year);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+        }
+
+        public String viewEvents(String date)
+        {
+            SQLiteDatabase db;
+            DatabaseHelper mDbHelper = new DatabaseHelper(getApplicationContext());
+            db = mDbHelper.getReadableDatabase();
+            Log.d("Hey","What's up?");
+            String data = "";
+            String Query = "SELECT * FROM events WHERE (dayofweek = ? AND dayofweek != ?) OR (startDateMonth = ? AND startDateDay = ? AND startDateYear = ?) ORDER BY startTimeHour, startTimeMinute";
+            if(db != null) {
+
+                String day = date.substring(0,2);
+                if(day.charAt(1) == '-') {
+                    day = day.substring(0, 1);
+                }
+                Calendar c = new GregorianCalendar();
+                c.setFirstDayOfWeek(Calendar.SUNDAY);
+                c.set(year, month-1, Integer.parseInt(day));
+                c.setFirstDayOfWeek(Calendar.SUNDAY);
+                tempDayOfWeek = c.get(_calendar.DAY_OF_WEEK);
+                Log.d("i'm"," here" + month + " " + Integer.parseInt(day) + " " + year);
+                Cursor cur = db.rawQuery(Query, new String[]{tempDayOfWeek.toString(),"99",month.toString(), day, year.toString()});
+                Log.d("count",""+cur.getCount());
+                if (cur.getCount() >= 1) {
+                    cur.moveToFirst();
+                    int x = 1;
+                    while (cur.isAfterLast() == false){
+                        data+= "Event Name: " + cur.getString(x) + cur.getString(x+14) +"\n";
+                        cur.moveToNext();}
+                }
+            }
+            return data;
         }
 
         public int getCurrentDayOfMonth() {

@@ -99,6 +99,16 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#000">
         </Button>
+
+        <Button
+            android:id="@+id/selectedDayMonthYearWeekly"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/lightgray"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#000">
+        </Button>
     </LinearLayout>
 
 </RelativeLayout>

@@ -16,12 +16,12 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="false"
-<<<<<<< HEAD
+
         android:background="@color/lightgray"
         android:weightSum="1">
-=======
+
         android:background="@color/lightgray">
->>>>>>> 0135994114fb6601e02537281464cda23a3a24f8
+
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -80,7 +80,7 @@
             android:textColor="#000">
         </Button>
 
-<<<<<<< HEAD
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -89,8 +89,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_weight="0.38" />
 
-=======
->>>>>>> 0135994114fb6601e02537281464cda23a3a24f8
+
     </LinearLayout>
 
 </RelativeLayout>

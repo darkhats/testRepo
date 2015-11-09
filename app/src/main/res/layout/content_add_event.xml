@@ -5,10 +5,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-<<<<<<< HEAD
-=======
+
     tools:showIn="@layout/activity_add_event"
->>>>>>> 0135994114fb6601e02537281464cda23a3a24f8
     tools:context=".add_event"
     android:background="@color/lightgray">
 
@@ -50,9 +48,9 @@
                 android:id="@+id/add_event_date_label"
                 android:text="Date:"
                 style="@style/add_event_col"/>
-<<<<<<< HEAD
 
-=======
+
+
             <Button
                 android:id="@+id/selectedStartDate"
                 android:layout_weight="1"
@@ -62,7 +60,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="#000"
                 android:layout_margin="2dip" />
->>>>>>> 0135994114fb6601e02537281464cda23a3a24f8
+
             <Button
                 android:id="@+id/selectedEndDate"
                 android:layout_weight="1"
@@ -157,7 +155,6 @@
                 android:layout_height="50dip"
                 android:text="Repeating Event?"
                 android:layout_gravity="center"
-<<<<<<< HEAD
                 android:layout_marginLeft="100dip"
                 android:checked="false" />
 
@@ -171,9 +168,8 @@
                 android:textColor="#000"
                 android:layout_margin="2dip"
                 android:layout_column="1" />
-=======
                 android:layout_marginLeft="100dip" />
->>>>>>> 0135994114fb6601e02537281464cda23a3a24f8
+
         </TableRow>
 
         <!-- Save Button -->

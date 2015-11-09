@@ -19,7 +19,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View.OnClickListener;
-
+import android.util.Log;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,6 +38,7 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
     private TextView currentWeek;
     private ImageView prevWeek;
     private ImageView nextWeek;
+    private Button button;
     private int day, month, year;
     private final int[] monthDays = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
     private List<String> list;
@@ -67,6 +68,8 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
 
         nextWeek = (ImageView) this.findViewById(R.id.nextWeek);
         nextWeek.setOnClickListener(this);
+        button = (Button) this.findViewById(R.id.saveAddEventButton);
+    //    button.setOnClickListener(this);
 
         Button eventButton = (Button) this.findViewById(R.id.view_event_button);
         setButtonText(eventButton, "Event Name Here");
@@ -117,6 +120,7 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
     public void setCalWeekDay(Calendar calendar){
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
         while(dayOfWeek > 1){
+            Log.d("day in setCalWeeklyDay is ", "" + day);
             if(month == 0 && day == 1){
                 year--;
                 month = 11;
@@ -135,16 +139,21 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
 
     @Override
     public void onClick(View v) {
+        Log.d("View",v.toString());
         if (v == prevWeek) {
-            if(month == 0 && day == 1){
+            Log.d("the day is ", "" + day + " " + calendar.get(calendar.DAY_OF_WEEK));
+            if(month == 0 && day < 8) {
                 year--;
                 month = 11;
                 day = 31;
-            }else if(day == 1){
+            }
+          else if(day < 8){
                 month--;
-                day = monthDays[month];
-            }else{
-                day--;
+                day = monthDays[month] - 7 + day;
+                Log.d("the post day is ", "" + day);
+            }
+        else if(day >= 8){
+                day-= 7;
             }
         }else if (v == nextWeek) {
             if(month == 11 && day == 31){
@@ -157,6 +166,11 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
             } else {
                 day++;
             }
+        }
+        else if(v == button)
+        {
+            Button temp = (Button) this.findViewById(R.id.saveAddEventButton);
+            temp.setText("hllo");
         }
         calendar.set(year, month, day);
         //get first day of the week

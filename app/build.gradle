@@ -6,11 +6,10 @@ android {
 
     defaultConfig {
         applicationId "com.calendarapp.kaylagallatin.calendar"
-<<<<<<< HEAD
+
         minSdkVersion 12
-=======
         minSdkVersion 11
->>>>>>> 0135994114fb6601e02537281464cda23a3a24f8
+
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -20,12 +19,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-<<<<<<< HEAD
         debug{
             debuggable true
         }
-=======
->>>>>>> 0135994114fb6601e02537281464cda23a3a24f8
+
     }
 }
 

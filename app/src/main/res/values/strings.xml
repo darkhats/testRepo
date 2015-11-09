@@ -8,4 +8,5 @@
     <string name="title_activity_weekly_view">Weekly View</string>
     <string name="title_activity_view_event">Event</string>
     <string name="title_activity_edit_event">Edit Event</string>
+    <string name="title_activity_activity_delete_event">activity_delete_event</string>
 </resources>

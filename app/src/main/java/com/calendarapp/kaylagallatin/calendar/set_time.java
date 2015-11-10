@@ -37,7 +37,11 @@ public class set_time extends AppCompatActivity {
         saveButton = (Button) this.findViewById(R.id.saveTimeButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(add_event.isStartTime)
+                if(edit_event.startTimeClicked && edit_event.isStartTime)
+                    edit_event.startTime = (TimePicker)findViewById(R.id.timePicker);
+                else if(edit_event.endTimeClicked)
+                    edit_event.endTime = (TimePicker)findViewById(R.id.timePicker);
+                else if(add_event.isStartTime)
                     add_event.startTime = (TimePicker)findViewById(R.id.timePicker);
                 else
                     add_event.endTime = (TimePicker)findViewById(R.id.timePicker);

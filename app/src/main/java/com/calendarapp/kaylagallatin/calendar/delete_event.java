@@ -50,7 +50,6 @@ public class delete_event extends AppCompatActivity {
                 String Query = "DELETE FROM events WHERE title = ?";
                 EditText editTextTitle = (EditText) findViewById(R.id.delete_event_title_edit);
                 Cursor cur = db.rawQuery(Query, new String[]{editTextTitle.getText().toString()});
-                Log.d("cur size"," "+ cur.getCount());
                 finish();
             }
         });

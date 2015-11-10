@@ -9,4 +9,7 @@
     <string name="title_activity_view_event">Event</string>
     <string name="title_activity_edit_event">Edit Event</string>
     <string name="title_activity_activity_delete_event">activity_delete_event</string>
+    <string name="title_activity_choose_edit_event">choose_edit_event</string>
+    <string name="title_activity_add_category">add_category</string>
+    <string name="title_activity_delete_category">delete_category</string>
 </resources>

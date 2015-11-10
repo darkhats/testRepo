@@ -39,6 +39,11 @@
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity
+            android:name=".choose_edit_event"
+            android:label="@string/title_activity_choose_edit_event"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
             android:name=".daily_view"
             android:label="@string/title_activity_daily_view"
             android:theme="@style/AppTheme.NoActionBar" >
@@ -61,6 +66,21 @@
         <activity
             android:name=".activity_delete_event"
             android:label="@string/title_activity_activity_delete_event"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".choose_edit_event"
+            android:label="@string/title_activity_choose_edit_event"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".add_category"
+            android:label="@string/title_activity_add_category"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".delete_category"
+            android:label="@string/title_activity_delete_category"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
     </application>

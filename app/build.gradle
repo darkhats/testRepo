@@ -8,7 +8,7 @@ android {
         applicationId "com.calendarapp.kaylagallatin.calendar"
 
         minSdkVersion 12
-        minSdkVersion 11
+
 
         targetSdkVersion 23
         versionCode 1

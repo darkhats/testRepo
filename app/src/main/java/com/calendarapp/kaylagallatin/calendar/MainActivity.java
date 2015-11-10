@@ -117,6 +117,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                         }
                         else if(item.getTitle().equals("Delete Event"))
                             startActivity(new Intent(MainActivity.this, delete_event.class));
+                        else if(item.getTitle().equals("Edit Event"))
+                            startActivity(new Intent(MainActivity.this, choose_edit_event.class));
+                        else if(item.getTitle().equals("Add Category"))
+                            startActivity(new Intent(MainActivity.this, add_category.class));
+                        else if(item.getTitle().equals("Delete Category"))
+                            startActivity(new Intent(MainActivity.this, delete_category.class));
                         else {
                             Toast.makeText(
                                     MainActivity.this,
@@ -398,7 +404,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                     cur.moveToFirst();
                     int x = 1;
                     while (cur.isAfterLast() == false){
-                        data+= "Event Name: " + cur.getString(x) + cur.getString(x+14) +"\n";
+                        data+= "Event Name: " + cur.getString(x)+"\n";
                         cur.moveToNext();}
                 }
             }

@@ -57,16 +57,16 @@ public class add_event extends AppCompatActivity{
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        selectedStartDateButton = (Button) this.findViewById(R.id.selectedStartDate);
-        selectedStartDateButton.setText("Start");
-        selectedStartDateButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                startActivity(new Intent(add_event.this, set_date.class));
-            }
-        });
+//        selectedStartDateButton = (Button) this.findViewById(R.id.selectedStartDate);
+//        selectedStartDateButton.setText("Start");
+//        selectedStartDateButton.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                startActivity(new Intent(add_event.this, set_date.class));
+//            }
+//        });
 
         selectedEndDateButton = (Button) this.findViewById(R.id.selectedEndDate);
-        selectedEndDateButton.setText("End");
+        selectedEndDateButton.setText("Date");
         selectedEndDateButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 startActivity(new Intent(add_event.this, set_date.class));
@@ -101,42 +101,48 @@ public class add_event extends AppCompatActivity{
                 DatabaseHelper mDbHelper = new DatabaseHelper(getApplicationContext());
                 db = mDbHelper.getWritableDatabase();
                 Log.d("timeHere", "" + endTime.getCurrentHour());
-                String Query = "SELECT * FROM events WHERE ((dayofweek = ? AND dayofweek != ?) OR (startDateMonth = ? AND startDateDay = ? AND startDateYear = ?))";
-                Integer tempMonth = set_date.editTextStartDateMonth.getMonth()+1;
-                CheckBox box = (CheckBox)findViewById(R.id.chkWindows);
-                GregorianCalendar temp = new GregorianCalendar(set_date.editTextStartDateMonth.getYear(),set_date.editTextStartDateMonth.getMonth(),set_date.editTextStartDateMonth.getDayOfMonth());
-                Integer tempDayOfWeek = (box.isChecked()?temp.get(temp.DAY_OF_WEEK):99);
-                Integer tempDay = set_date.editTextStartDateMonth.getDayOfMonth();
-                Integer tempYear = set_date.editTextStartDateMonth.getYear();
-                Cursor cur = db.rawQuery(Query, new String[]{tempDayOfWeek.toString(), "99", tempMonth.toString(), tempDay.toString(), tempYear.toString()});
-                boolean valid = true;
-                if(cur.getCount() > 0)
+                EditText editTextCategory = (EditText)findViewById(R.id.add_event_category_edit);
+                String QueryCat = "SELECT * FROM categories WHERE categoryName = ?";
+                Cursor curCat = db.rawQuery(QueryCat, new String[]{editTextCategory.getText().toString()});
+                if(editTextCategory.getText().toString().length() > 0 && curCat.getCount() == 0)
                 {
-                    cur.moveToFirst();
-                    while(cur.isAfterLast() == false)
-                    {
-                        int dbStartTime = Integer.parseInt(cur.getString(8)) * 60 + Integer.parseInt(cur.getString(9));
-                        int dbEndTime = Integer.parseInt(cur.getString(10)) * 60 + Integer.parseInt(cur.getString(11));
-                        int inputStartTime = startTime.getCurrentHour() * 60 + startTime.getCurrentMinute();
-                        int inputEndTime = endTime.getCurrentHour() * 60 + endTime.getCurrentMinute();
+                    Toast toastCat = Toast.makeText(add_event.this, "Invalid category. Please enter a valid category. " , Toast.LENGTH_SHORT);
+                    toastCat.show();
+                }
+                else {
+                    String Query = "SELECT * FROM events WHERE ((dayofweek = ? AND dayofweek != ?) OR (startDateMonth = ? AND startDateDay = ? AND startDateYear = ?))";
+                    Integer tempMonth = set_date.editTextStartDateMonth.getMonth() + 1;
+                    CheckBox box = (CheckBox) findViewById(R.id.chkWindows);
+                    GregorianCalendar temp = new GregorianCalendar(set_date.editTextStartDateMonth.getYear(), set_date.editTextStartDateMonth.getMonth(), set_date.editTextStartDateMonth.getDayOfMonth());
+                    Integer tempDayOfWeek = (box.isChecked() ? temp.get(temp.DAY_OF_WEEK) : 99);
+                    Integer tempDay = set_date.editTextStartDateMonth.getDayOfMonth();
+                    Integer tempYear = set_date.editTextStartDateMonth.getYear();
+                    Cursor cur = db.rawQuery(Query, new String[]{tempDayOfWeek.toString(), "99", tempMonth.toString(), tempDay.toString(), tempYear.toString()});
+                    boolean valid = true;
+                    if (cur.getCount() > 0) {
+                        cur.moveToFirst();
+                        while (cur.isAfterLast() == false) {
+                            int dbStartTime = Integer.parseInt(cur.getString(8)) * 60 + Integer.parseInt(cur.getString(9));
+                            int dbEndTime = Integer.parseInt(cur.getString(10)) * 60 + Integer.parseInt(cur.getString(11));
+                            int inputStartTime = startTime.getCurrentHour() * 60 + startTime.getCurrentMinute();
+                            int inputEndTime = endTime.getCurrentHour() * 60 + endTime.getCurrentMinute();
 
-                        if(dbStartTime <= inputStartTime && dbEndTime >=inputStartTime)
-                            valid=false;
-                        else if (dbStartTime<=inputEndTime && dbEndTime>=inputEndTime)
-                            valid=false;
-                        else if(inputStartTime<=dbStartTime && dbEndTime<=inputEndTime)
-                            valid=false;
-                        cur.moveToNext();
+                            if (dbStartTime <= inputStartTime && dbEndTime >= inputStartTime)
+                                valid = false;
+                            else if (dbStartTime <= inputEndTime && dbEndTime >= inputEndTime)
+                                valid = false;
+                            else if (inputStartTime <= dbStartTime && dbEndTime <= inputEndTime)
+                                valid = false;
+                            cur.moveToNext();
+                        }
                     }
-                }
-                if(valid) {
-                    saveEvent();
-                    finish();
-                }
-                else
-                {
-                    Toast toast = Toast.makeText(add_event.this, "You're already busy during that time! Please choose another " , Toast.LENGTH_SHORT);
-                    toast.show();
+                    if (valid) {
+                        saveEvent();
+                        finish();
+                    } else {
+                        Toast toast = Toast.makeText(add_event.this, "You're already busy during that time! Please choose another ", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
                 }
             }
         });
@@ -168,6 +174,7 @@ public class add_event extends AppCompatActivity{
         EditText editTextTitle = (EditText)findViewById(R.id.add_event_title_edit);
         EditText editTextDescription = (EditText)findViewById(R.id.add_event_description_edit);
         EditText editTextLocation = (EditText)findViewById(R.id.add_event_location_edit);
+        EditText editTextCategory = (EditText)findViewById(R.id.add_event_category_edit);
         CheckBox box = (CheckBox)findViewById(R.id.chkWindows);
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.TITLE,editTextTitle.getText().toString());
@@ -185,7 +192,7 @@ public class add_event extends AppCompatActivity{
         values.put(DatabaseHelper.DESCRIPTION,editTextDescription.getText().toString());
         values.put(DatabaseHelper.PERIODIC,box.isChecked());
         values.put(DatabaseHelper.DAYOFWEEK,(box.isChecked()?temp.get(temp.DAY_OF_WEEK):99));
-
+        values.put(DatabaseHelper.CATEGORY,editTextCategory.getText().toString());
         long newRowId;
         newRowId = db.insert(
                 "events",

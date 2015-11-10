@@ -166,12 +166,14 @@ public class daily_view extends AppCompatActivity implements OnClickListener{
                 int x = 1;
                 while (cur.isAfterLast() == false){
                     x = 1;
-                    data+= "Event Name: " + cur.getString(x) + "k\n";
+                    data+= "Event Name: " + cur.getString(x) + "\n";
                     x = 8;
                     data+= "Event Start Time: " + cur.getString(x++) + ":" + cur.getString(x++) + "\n";
                     data+= "Event End Time: " + cur.getString(x++) + ":" + cur.getString(x++) + "\n";
                     data+= "Event Location: " + cur.getString(x++) + "\n";
-                    data += "Event Description: " + cur.getString(x++) + "\n\n\n";
+                    data += "Event Description: " + cur.getString(x++) + "\n";
+                    x += 2;
+                    data += "Event Category: " + cur.getString(x) + "\n\n\n";
                     cur.moveToNext();}
             }
 

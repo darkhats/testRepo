@@ -16,7 +16,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="false"
-        android:background="@color/lightgray">
+        android:background="@color/lightgray"
+        android:weightSum="1">
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -81,24 +82,72 @@
             </ImageView>
         </LinearLayout>
 
-        <GridView
-            android:id="@+id/calendar"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:numColumns="7"
-            android:background="@color/white"
-            android:textAlignment="center">
-        </GridView>
+        <!--<GridView-->
+            <!--android:id="@+id/calendar"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:numColumns="7"-->
+            <!--android:background="@color/white"-->
+            <!--android:textAlignment="center">-->
+        <!--</GridView>-->
 
-        <Button
-            android:id="@+id/view_event_button"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@color/lightgray"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#000">
-        </Button>
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></TableLayout>
+
+
+
+
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="52dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/sunday" />
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="52dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/monday" />
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="52dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/tuesday" />
+
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="52dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/wednesday" />
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="52dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/thursday" />
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="52dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/friday" />
+
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/saturday" />
+
+        </TableRow>
 
         <Button
             android:id="@+id/selectedDayMonthYearWeekly"
@@ -109,6 +158,13 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#000">
         </Button>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/weeklyEditText"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.32" />
     </LinearLayout>
 
 </RelativeLayout>

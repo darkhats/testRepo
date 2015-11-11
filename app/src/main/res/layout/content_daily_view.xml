@@ -20,9 +20,6 @@
         android:background="@color/lightgray"
         android:weightSum="1">
 
-        android:background="@color/lightgray">
-
-
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="60sp"
@@ -70,26 +67,16 @@
                 android:background="@drawable/add" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/view_event_button"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@color/lightgray"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#000">
-        </Button>
-
         <ScrollView
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:id="@+id/textViewDaily"
                 android:layout_gravity="center_horizontal"
-                android:layout_weight="0.38" />
+                android:gravity="center" />
         </ScrollView>
 
     </LinearLayout>

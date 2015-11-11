@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     private static final String tag = "MyCalendarActivity";
 
     private TextView currentMonth;
-    private Button selectedDayMonthYearButton;
+    private TextView selectedDayMonthYearButton;
     private Button addEventButton;
     private Button menuButton;
     private ImageView prevMonth;
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         month = _calendar.get(Calendar.MONTH) + 1;
         year = _calendar.get(Calendar.YEAR);
 
-        selectedDayMonthYearButton = (Button) this.findViewById(R.id.selectedDayMonthYear);
+        selectedDayMonthYearButton = (TextView) this.findViewById(R.id.selectedDayMonthYear);
         selectedDayMonthYearButton.setText("");
 
         addEventButton = (Button) this.findViewById(R.id.addEvent);
@@ -204,29 +204,23 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
     @Override
     public void onDestroy() {
-        Log.d(tag, "Destroying View …");
         super.onDestroy();
     }
 
-
     // Inner Class
     public class GridCellAdapter extends BaseAdapter implements OnClickListener {
-        private static final String tag = "GridCellAdapter";
         private final Context _context;
 
         private final List<String> list;
         private static final int DAY_OFFSET = 1;
         private final String[] weekdays = new String[] { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
-        private final String[] months = { "January", "February", "March", "April", "May", "June",
-                                        "July", "August", "September", "October", "November", "December" };
         private final int[] daysOfMonth = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
         private int daysInMonth;
         private int currentDayOfMonth;
         private int currentWeekDay;
         private Button gridcell;
         private TextView num_events_per_day;
-        private final HashMap<String, Integer> eventsPerMonthMap;
-        private final SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yy");
+        private final SimpleDateFormat dateFormatter = new SimpleDateFormat("M/d/yyyy");
 
         // Days in Current Month
         public GridCellAdapter(Context context, int textViewResourceId, int month, int year) {
@@ -239,13 +233,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
             // Print Month
             printMonth(month, year);
-
-            // Find Number of Events
-            eventsPerMonthMap = findNumberOfEventsPerMonth(year, month);
         }
 
         private String getMonthAsString(int i) {
-            return months[i];
+            return "" + (i + 1);
         }
 
         private String getWeekDayAsString(int i) {
@@ -329,24 +320,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             }
         }
 
-        /**
-         * NOTE: YOU NEED TO IMPLEMENT THIS PART Given the YEAR, MONTH, retrieve
-         * ALL entries from a SQLite database for that month. Iterate over the
-         * List of All entries, and get the dateCreated, which is converted into
-         * day.
-         *
-         * @param year
-         * @param month
-         * @return
-         */
-        private HashMap<String, Integer> findNumberOfEventsPerMonth(int year, int month) {
-            HashMap<String, Integer> map = new HashMap<String, Integer>();
-
-
-
-            return map;
-        }
-
         @Override
         public long getItemId(int position) {
             return position;
@@ -369,17 +342,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             String theday = day_color[0];
             String themonth = day_color[2];
             String theyear = day_color[3];
-            if ((!eventsPerMonthMap.isEmpty()) && (eventsPerMonthMap != null)) {
-                if (eventsPerMonthMap.containsKey(theday)) {
-                    num_events_per_day = (TextView) row.findViewById(R.id.num_events_per_day);
-                    Integer numEvents = (Integer) eventsPerMonthMap.get(theday);
-                    num_events_per_day.setText(numEvents.toString());
-                }
-            }
+
 
             // Set the Day GridCell
             gridcell.setText(theday);
-            gridcell.setTag(theday + "-" + themonth + "-" + theyear);
+            gridcell.setTag(themonth + "/" + theday + "/" + theyear);
 
             if (day_color[1].equals("GREY")) {
                 gridcell.setTextColor(getResources().getColor(R.color.lightgray));
@@ -400,7 +367,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             calendarView.invalidateViews();
             String date_month_year = (String) view.getTag();
             String theseEvents = viewEvents(date_month_year);
-            selectedDayMonthYearButton.setText(Html.fromHtml("Selected: " + date_month_year + "<br>" + theseEvents), TextView.BufferType.SPANNABLE);
+            selectedDayMonthYearButton.setText(Html.fromHtml("Date: " + date_month_year + "<br>" + theseEvents), TextView.BufferType.SPANNABLE);
             try {
                 Date parsedDate = dateFormatter.parse(date_month_year);
             } catch (ParseException e) {
@@ -413,30 +380,25 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             SQLiteDatabase db;
             DatabaseHelper mDbHelper = new DatabaseHelper(getApplicationContext());
             db = mDbHelper.getReadableDatabase();
-            Log.d("Hey","What's up?");
             String data = "";
             String Query = "SELECT * FROM events WHERE (dayofweek = ? AND dayofweek != ?) OR (startDateMonth = ? AND startDateDay = ? AND startDateYear = ?) ORDER BY startTimeHour, startTimeMinute";
             if(db != null) {
 
-                String day = date.substring(0,2);
-                if(day.charAt(1) == '-') {
-                    day = day.substring(0, 1);
-                }
+                String[] tempDate  = date.split("/");
+                String day = tempDate[1];
                 Calendar c = new GregorianCalendar();
                 c.setFirstDayOfWeek(Calendar.SUNDAY);
                 c.set(year, month-1, Integer.parseInt(day));
                 c.setFirstDayOfWeek(Calendar.SUNDAY);
                 tempDayOfWeek = c.get(_calendar.DAY_OF_WEEK);
-                Log.d("i'm"," here" + month + " " + Integer.parseInt(day) + " " + year);
                 Cursor cur = db.rawQuery(Query, new String[]{tempDayOfWeek.toString(),"99",month.toString(), day, year.toString()});
-                Log.d("count",""+cur.getCount());
                 String selectQuery = "SELECT holidayName FROM holidays WHERE holidayDay = ? AND holidayMonth = ?";
                 Cursor selectCur = db.rawQuery(selectQuery, new String[]{day.toString(),month.toString()});
                 TextView tempDay = (TextView)findViewById(R.id.selectedDayMonthYear);
                 tempDay.setBackgroundColor(getResources().getColor(android.R.color.white));
                 if (selectCur.getCount() >= 1) {
                     selectCur.moveToFirst();
-                    data += "Holiday: " + selectCur.getString(0) + "\n";
+                    data += "Holiday: " + selectCur.getString(0) + "<br>";
                     TextView weeklyDay = (TextView) findViewById(R.id.selectedDayMonthYear);
                     weeklyDay.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
                 }
@@ -454,10 +416,20 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                         curColor.moveToFirst();
                         if(curColor.getCount() >= 1)
                             data += "<font color = '" + curColor.getString(0) + "'>";
-                        data+= "Event Name: " + cur.getString(x)+"<br>";
+                            x = 1;
+                            data+= "Name: " + cur.getString(x) + "<br>";
+                            x = 8;
+                            data+= "Start Time: " + daily_view.formatTime(cur.getString(x++),cur.getString(x++)) + "<br>";
+                            data+= "End Time: " + daily_view.formatTime(cur.getString(x++), cur.getString(x++)) + "<br>";
+                            data+= "Location: " + cur.getString(x++) + "<br>";
+                            data += "Description: " + cur.getString(x++) + "<br>";
+                            x += 2;
+                            data += "Category: " + cur.getString(x) + "<br><br><br>";
                         if(curColor.getCount() >= 1)
                             data += "</font>";
                         cur.moveToNext();}
+                }else{
+                    data += "No events scheduled today <br>";
                 }
             }
             return data;

@@ -33,7 +33,7 @@
         <!-- Save Button -->
         <Button
             android:id="@+id/saveDeleteEventButton"
-            android:text="Save"
+            android:text="Delete"
             android:textColor="@color/black"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="fill_parent"

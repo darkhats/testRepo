@@ -164,7 +164,7 @@
         <!-- Save Button -->
         <Button
             android:id="@+id/saveEditEventButton"
-            android:text="Save"
+            android:text="Confirm"
             android:textColor="@color/black"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="fill_parent"

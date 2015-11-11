@@ -45,8 +45,6 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
     private Button button;
     private int day, month, year;
     private final int[] monthDays = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-    private List<String> list;
-    private GridView grid;
     private Integer cDay;
     private Integer cMonth;
     private Integer cYear;
@@ -65,35 +63,18 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        grid = (GridView) findViewById(R.id.calendar);
-
-
-
         calendar = Calendar.getInstance(Locale.getDefault());
         day = calendar.get(Calendar.DAY_OF_MONTH);
         month = calendar.get(Calendar.MONTH);
         year = calendar.get(Calendar.YEAR);
         //Sets calendar to first day of the week
         setCalWeekDay(calendar);
-        list = new ArrayList<String>();
 
         currentWeek = (TextView) this.findViewById(R.id.currentWeek);
-
         nextWeek = (ImageView) this.findViewById(R.id.nextWeek);
         nextWeek.setOnClickListener(this);
         prevWeek = (ImageView) this.findViewById(R.id.prevWeek);
         prevWeek.setOnClickListener(this);
-        //      button = (Button) this.findViewById(R.id.saveAddEventButton);
-        //      button.setOnClickListener(this);
-
-        //      Button eventButton = (Button) this.findViewById(R.id.view_event_button);
-        //    setButtonText(eventButton, "Event Name Here");
-        //  eventButton.setOnClickListener(new View.OnClickListener() {
-        //     public void onClick(View v) {
-        //        startActivity(new Intent(weekly_view.this, view_event.class));
-        //  }
-        // });
-
 
         sun = (Button) this.findViewById(R.id.sunday);
         sun.setOnClickListener(new View.OnClickListener() {
@@ -102,7 +83,6 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
                 viewEvents(0);
             }
         });
-
         mon = (Button) this.findViewById(R.id.monday);
         mon.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
@@ -110,7 +90,6 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
                 viewEvents(1);
             }
         });
-
         tue = (Button) this.findViewById(R.id.tuesday);
         tue.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
@@ -118,14 +97,12 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
                 viewEvents(2);
             }
         });
-
         wen = (Button) this.findViewById(R.id.wednesday);
         wen.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 viewEvents(3);
             }
         });
-
         thu = (Button) this.findViewById(R.id.thursday);
         thu.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -145,6 +122,7 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
                 viewEvents(6);
             }
         });
+
         Button addEventButton = (Button) this.findViewById(R.id.addEvent);
         addEventButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -186,11 +164,8 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
                 popup.show();
             }
         });
-
         printWeek(calendar);
     }
-
-    //  private void setButtonText(Button eventButton, String text){ eventButton.setText(text);}
 
     public void viewEvents(int dayofWeekNumber)
     {
@@ -208,14 +183,14 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
         Cursor cur = db.rawQuery(Query, new String[]{dayOfWeek.toString(),"99",month.toString(), day.toString(), year.toString()});
         cur.moveToFirst();
         TextView eventList = (TextView)findViewById(R.id.weeklyEditText);
-        String data = "Selected Date: " + (month) + "/" + day + "/" + year + "\n\n";
+        String data = "Date: " + (month) + "/" + day + "/" + year + "<br>";
         String selectQuery = "SELECT holidayName FROM holidays WHERE holidayDay = ? AND holidayMonth = ?";
         Cursor selectCur = db.rawQuery(selectQuery, new String[]{day.toString(),tempMonth.toString()});
         TextView tempDay = (TextView)findViewById(R.id.weeklyEditText);
         tempDay.setBackgroundColor(getResources().getColor(android.R.color.white));
         if (selectCur.getCount() >= 1) {
             selectCur.moveToFirst();
-            data += "Holiday: " + selectCur.getString(0) + "\n";
+            data += "Holiday: " + selectCur.getString(0) + "<br>";
             TextView weeklyDay = (TextView) findViewById(R.id.weeklyEditText);
             weeklyDay.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
         }
@@ -226,20 +201,31 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
         if(cur.getCount() > 0)
         {
             cur.moveToFirst();
-            data += "Events<br>";
-            while(cur.isAfterLast() == false)
+            data += "<br><br>";
+            int x = 0;
+            while(!cur.isAfterLast())
             {
                 String QueryColor = "SELECT categoryColor FROM categories WHERE categoryName = ?";
                 Cursor curColor = db.rawQuery(QueryColor, new String[]{cur.getString(16)});
                 curColor.moveToFirst();
                 if(curColor.getCount() >= 1)
                     data += "<font color = '" + curColor.getString(0) + "'>";
-                data += "Event name: " + cur.getString(1) + "<br>";
+                    x = 1;
+                    data+= "Name: " + cur.getString(x) + "<br>";
+                    x = 8;
+                    data+= "Start Time: " + daily_view.formatTime(cur.getString(x++),cur.getString(x++)) + "<br>";
+                    data+= "End Time: " + daily_view.formatTime(cur.getString(x++),cur.getString(x++)) + "<br>";
+                    data+= "Location: " + cur.getString(x++) + "<br>";
+                    data += "Description: " + cur.getString(x++) + "<br>";
+                    x += 2;
+                    data += "Category: " + cur.getString(x) + "<br><br><br>";
                 if(curColor.getCount() >= 1)
                     data += "</font>";
                 cur.moveToNext();
             }
 
+        }else{
+            data += "No events scheduled today <br>";
         }
         eventList.setText(Html.fromHtml(data), TextView.BufferType.SPANNABLE);
     }
@@ -247,7 +233,6 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
     public void setCalWeekDay(Calendar calendar){
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
         while(dayOfWeek > 1){
-            Log.d("day in setCalWeeklyDay is ", "" + day);
             if(month == 0 && day == 1){
                 year--;
                 month = 11;
@@ -266,11 +251,9 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
 
     @Override
     public void onClick(View v) {
-        Log.d("View",v.toString());
         TextView eventList = (TextView)findViewById(R.id.weeklyEditText);
         eventList.setText("");
         if (v == prevWeek) {
-            Log.d("the day is ", "" + day + " " + calendar.get(calendar.DAY_OF_WEEK));
             if(month == 0 && day < 8) {
                 year--;
                 month = 11;
@@ -279,7 +262,6 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
             else if(day < 8){
                 month--;
                 day = monthDays[month] - 7 + day;
-                Log.d("the post day is ", "" + day);
             }
             else if(day >= 8){
                 day-= 7;
@@ -296,11 +278,6 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
                 day++;
             }
         }
-        else if(v == button)
-        {
-            Button temp = (Button) this.findViewById(R.id.saveAddEventButton);
-            temp.setText("hllo");
-        }
         calendar.set(year, month, day);
         //get first day of the week
         setCalWeekDay(calendar);
@@ -311,24 +288,10 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
     }
 
     private void printWeek(Calendar calendar) {
-        list.clear();
         CharSequence firstDay = DateFormat.format(dateTemplate, calendar.getTime());
         cDay = calendar.get(Calendar.DAY_OF_MONTH);
         cMonth = calendar.get(Calendar.MONTH);
         cYear = calendar.get(Calendar.YEAR);
-//        list.add("\t\t" + String.valueOf(day));
-
-//        // Add Current Week Days
-//        for (int i = 1; i <= 6; i++) {
-//            incrementDay(calendar);
-//            int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-//            list.add("\t\t" + String.valueOf(dayOfMonth) + "HELLO WORLD!!!!!!!!");
-//        }
-//        CharSequence lastDay = DateFormat.format(dateTemplate, calendar.getTime());
-//        currentWeek.setText(String.valueOf(firstDay) + " -\n" + String.valueOf(lastDay));
-        calendar.set(cYear, cMonth, cDay);
-//        ArrayAdapter<String> adp=new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line,list);
-////        grid.setAdapter(adp)
         CharSequence lastDay = "";
         for(int k = 0; k < 7; k++) {
             Integer dayofMonth = calendar.get(Calendar.DAY_OF_MONTH);
@@ -367,8 +330,6 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
 
         currentWeek.setText(String.valueOf(firstDay) + " -\n" + String.valueOf(lastDay));
     }
-
-
 
     private void incrementDay(Calendar calendar){
         if(month == 11 && day == 31){

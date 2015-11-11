@@ -35,11 +35,7 @@ public class daily_view extends AppCompatActivity implements OnClickListener{
     private ImageView nextDay;
     private Integer day, month, year;
     private final int[] monthDays = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-    public String data;
-    private GregorianCalendar tempCal;
-
-
-
+    public String data = " ";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,21 +51,12 @@ public class daily_view extends AppCompatActivity implements OnClickListener{
         day = calendar.get(Calendar.DAY_OF_MONTH);
         month = calendar.get(Calendar.MONTH);
         year = calendar.get(Calendar.YEAR);
-        tempCal = new GregorianCalendar(year,month,day);
         makeView();
         currentDay = (TextView) this.findViewById(R.id.currentDay);
         currentDay.setText(DateFormat.format(dateTemplate, calendar.getTime()));
 
         nextDay = (ImageView) this.findViewById(R.id.nextDay);
         nextDay.setOnClickListener(this);
-
-        Button eventButton = (Button) this.findViewById(R.id.view_event_button);
-        setButtonText(eventButton, "Temp Placeholder");
-        eventButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                startActivity(new Intent(daily_view.this, view_event.class));
-            }
-        });
 
         Button addEventButton = (Button) this.findViewById(R.id.addEvent);
         addEventButton.setOnClickListener(new View.OnClickListener() {
@@ -121,7 +108,7 @@ public class daily_view extends AppCompatActivity implements OnClickListener{
         tempDay.setBackgroundColor(getResources().getColor(android.R.color.white));
         if (selectCur.getCount() >= 1) {
             selectCur.moveToFirst();
-            data += "Holiday Name: " + selectCur.getString(0) + "\n";
+            data += "Holiday Name: " + selectCur.getString(0) + "<br>";
             TextView day = (TextView)findViewById(R.id.textViewDaily);
             day.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
 
@@ -172,7 +159,6 @@ public class daily_view extends AppCompatActivity implements OnClickListener{
             data += "Holiday Name: " + selectCur.getString(0) + "\n";
             TextView day = (TextView)findViewById(R.id.textViewDaily);
             day.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
-            Log.d("lol",data);
         }
         makeView();
         //Check for events on new day and setButtonText to event title
@@ -201,9 +187,7 @@ public class daily_view extends AppCompatActivity implements OnClickListener{
         }
         String Query = "SELECT * FROM events WHERE (dayofweek = ? AND dayofweek != ?) OR (startDateMonth = ? AND startDateDay = ? AND startDateYear = ?) ORDER BY startTimeHour, startTimeMinute";
         if(db != null) {
-            Log.d("i'm", " here");
             Cursor cur = db.rawQuery(Query, new String[]{tempDayOfWeek.toString(),"99",tempMonth.toString(), day.toString(), year.toString()});
-            Log.d("count", "" + cur.getCount());
             if (cur.getCount() >= 1) {
                 cur.moveToFirst();
                 int x = 1;
@@ -214,26 +198,28 @@ public class daily_view extends AppCompatActivity implements OnClickListener{
                     if(curColor.getCount() >= 1)
                         data += "<font color = '" + curColor.getString(0) + "'>";
                     x = 1;
-                    data+= "Event Name: " + cur.getString(x) + "<br>";
+                    data+= "Name: " + cur.getString(x) + "<br>";
                     x = 8;
-                    data+= "Event Start Time: " + formatTime(cur.getString(x++),cur.getString(x++)) + "<br>";
-                    data+= "Event End Time: " + formatTime(cur.getString(x++),cur.getString(x++)) + "<br>";
-                    data+= "Event Location: " + cur.getString(x++) + "<br>";
-                    data += "Event Description: " + cur.getString(x++) + "<br>";
+                    data+= "Start Time: " + formatTime(cur.getString(x++),cur.getString(x++)) + "<br>";
+                    data+= "End Time: " + formatTime(cur.getString(x++),cur.getString(x++)) + "<br>";
+                    data+= "Location: " + cur.getString(x++) + "<br>";
+                    data += "Description: " + cur.getString(x++) + "<br>";
                     x += 2;
-                    data += "Event Category: " + cur.getString(x) + "<br><br><br>";
+                    data += "Category: " + cur.getString(x) + "<br><br><br>";
                     if(curColor.getCount() >= 1)
                         data += "</font>";
                     cur.moveToNext();}
+            }else{
+                data += "No events scheduled today <br>";
             }
 
         }
         TextView temp = (TextView)findViewById(R.id.textViewDaily);
         temp.setText(Html.fromHtml(data), TextView.BufferType.SPANNABLE);
-        data = "";
+        data = " ";
     }
 
-    private String formatTime(String hour, String minute)
+    protected static String formatTime(String hour, String minute)
     {
         String amOrPm = " AM";
         String time = "";

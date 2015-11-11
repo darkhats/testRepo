@@ -31,7 +31,6 @@ public class add_category extends AppCompatActivity {
                 "<font color = 'purple'>purple </font><font color = 'red'>red</font>";
         categoryDisplay.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
         Button selectedSaveButton = (Button) this.findViewById(R.id.saveAddCategoryButton);
-        selectedSaveButton.setText("Save");
         selectedSaveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String[] colors = {"magenta","red","purple","maroon"};

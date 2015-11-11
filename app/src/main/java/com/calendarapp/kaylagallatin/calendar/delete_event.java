@@ -42,7 +42,6 @@ public class delete_event extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Button selectedSaveButton = (Button) this.findViewById(R.id.saveDeleteEventButton);
-        selectedSaveButton.setText("Save");
         selectedSaveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 DatabaseHelper mDbHelper = new DatabaseHelper(getApplicationContext());

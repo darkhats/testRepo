@@ -22,7 +22,6 @@ public class delete_category extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Button selectedSaveButton = (Button) this.findViewById(R.id.saveDeleteCategoryButton);
-        selectedSaveButton.setText("Confirm");
         selectedSaveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 DatabaseHelper mDbHelper = new DatabaseHelper(getApplicationContext());

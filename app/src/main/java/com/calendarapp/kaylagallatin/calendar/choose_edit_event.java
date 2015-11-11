@@ -29,7 +29,6 @@ public class choose_edit_event extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Button selectedEditButton = (Button) this.findViewById(R.id.confirmSelectEventButton);
-        selectedEditButton.setText("Save");
         selectedEditButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 DatabaseHelper mDbHelper = new DatabaseHelper(getApplicationContext());

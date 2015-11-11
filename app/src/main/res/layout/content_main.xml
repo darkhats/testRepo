@@ -16,11 +16,9 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="false"
-
         android:background="@color/lightgray"
         android:nestedScrollingEnabled="true">
 
-        android:background="@color/lightgray">
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -92,17 +90,18 @@
         </GridView>
 
         <ScrollView
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content">
-        <Button
+        <TextView
             android:id="@+id/selectedDayMonthYear"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@color/lightgray"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#000">
-        </Button>
+            android:textColor="#000"
+            android:gravity="center">
+        </TextView>
         </ScrollView>
 
     </LinearLayout>

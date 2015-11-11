@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -82,16 +83,16 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
         nextWeek.setOnClickListener(this);
         prevWeek = (ImageView) this.findViewById(R.id.prevWeek);
         prevWeek.setOnClickListener(this);
-  //      button = (Button) this.findViewById(R.id.saveAddEventButton);
-  //      button.setOnClickListener(this);
+        //      button = (Button) this.findViewById(R.id.saveAddEventButton);
+        //      button.setOnClickListener(this);
 
-  //      Button eventButton = (Button) this.findViewById(R.id.view_event_button);
-    //    setButtonText(eventButton, "Event Name Here");
-      //  eventButton.setOnClickListener(new View.OnClickListener() {
-       //     public void onClick(View v) {
+        //      Button eventButton = (Button) this.findViewById(R.id.view_event_button);
+        //    setButtonText(eventButton, "Event Name Here");
+        //  eventButton.setOnClickListener(new View.OnClickListener() {
+        //     public void onClick(View v) {
         //        startActivity(new Intent(weekly_view.this, view_event.class));
-          //  }
-       // });
+        //  }
+        // });
 
 
         sun = (Button) this.findViewById(R.id.sunday);
@@ -163,7 +164,16 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
                             startActivity(new Intent(weekly_view.this, daily_view.class));
                         } else if (item.getTitle().equals("Monthly View")) {
                             startActivity(new Intent(weekly_view.this, MainActivity.class));
-                        } else {
+                        }
+                        else if(item.getTitle().equals("Delete Event"))
+                            startActivity(new Intent(weekly_view.this, delete_event.class));
+                        else if(item.getTitle().equals("Edit Event"))
+                            startActivity(new Intent(weekly_view.this, choose_edit_event.class));
+                        else if(item.getTitle().equals("Add Category"))
+                            startActivity(new Intent(weekly_view.this, add_category.class));
+                        else if(item.getTitle().equals("Delete Category"))
+                            startActivity(new Intent(weekly_view.this, delete_category.class));
+                        else {
                             Toast.makeText(
                                     weekly_view.this,
                                     "Already showing " + item.getTitle(),
@@ -180,7 +190,7 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
         printWeek(calendar);
     }
 
-  //  private void setButtonText(Button eventButton, String text){ eventButton.setText(text);}
+    //  private void setButtonText(Button eventButton, String text){ eventButton.setText(text);}
 
     public void viewEvents(int dayofWeekNumber)
     {
@@ -194,24 +204,44 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
         Integer year = temp.get(Calendar.YEAR);
         Integer dayOfWeek = temp.get(Calendar.DAY_OF_WEEK) % 7;
         Integer tempMonth = cMonth + 1;
-        Log.d("you"," clicked sunday" + cDay + " " + cMonth);
         String Query = "SELECT * FROM events WHERE (dayofweek = ? AND dayofweek != ?) OR (startDateMonth = ? AND startDateDay = ? AND startDateYear = ?) ORDER BY startTimeHour, startTimeMinute";
         Cursor cur = db.rawQuery(Query, new String[]{dayOfWeek.toString(),"99",month.toString(), day.toString(), year.toString()});
         cur.moveToFirst();
         TextView eventList = (TextView)findViewById(R.id.weeklyEditText);
         String data = "Selected Date: " + (month) + "/" + day + "/" + year + "\n\n";
-
+        String selectQuery = "SELECT holidayName FROM holidays WHERE holidayDay = ? AND holidayMonth = ?";
+        Cursor selectCur = db.rawQuery(selectQuery, new String[]{day.toString(),tempMonth.toString()});
+        TextView tempDay = (TextView)findViewById(R.id.weeklyEditText);
+        tempDay.setBackgroundColor(getResources().getColor(android.R.color.white));
+        if (selectCur.getCount() >= 1) {
+            selectCur.moveToFirst();
+            data += "Holiday: " + selectCur.getString(0) + "\n";
+            TextView weeklyDay = (TextView) findViewById(R.id.weeklyEditText);
+            weeklyDay.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+        }
+        if(dayOfWeek == 0 || dayOfWeek == 1) {
+            TextView tempDay2 = (TextView) findViewById(R.id.weeklyEditText);
+            tempDay2.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_dark));
+        }
         if(cur.getCount() > 0)
         {
-            data += "Events\n";
+            cur.moveToFirst();
+            data += "Events<br>";
             while(cur.isAfterLast() == false)
             {
-                data += "Event name: " + cur.getString(1) + "\n";
+                String QueryColor = "SELECT categoryColor FROM categories WHERE categoryName = ?";
+                Cursor curColor = db.rawQuery(QueryColor, new String[]{cur.getString(16)});
+                curColor.moveToFirst();
+                if(curColor.getCount() >= 1)
+                    data += "<font color = '" + curColor.getString(0) + "'>";
+                data += "Event name: " + cur.getString(1) + "<br>";
+                if(curColor.getCount() >= 1)
+                    data += "</font>";
                 cur.moveToNext();
             }
 
         }
-        eventList.setText(data);
+        eventList.setText(Html.fromHtml(data), TextView.BufferType.SPANNABLE);
     }
 
     public void setCalWeekDay(Calendar calendar){
@@ -244,14 +274,14 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
             if(month == 0 && day < 8) {
                 year--;
                 month = 11;
-                day = 31;
+                day = 31 - 7 + day;
             }
-          else if(day < 8){
+            else if(day < 8){
                 month--;
                 day = monthDays[month] - 7 + day;
                 Log.d("the post day is ", "" + day);
             }
-        else if(day >= 8){
+            else if(day >= 8){
                 day-= 7;
             }
         }else if (v == nextWeek) {
@@ -276,6 +306,8 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
         setCalWeekDay(calendar);
         printWeek(calendar);
         //Check for events on new day and setButtonText to event title
+        TextView tempDay = (TextView)findViewById(R.id.weeklyEditText);
+        tempDay.setBackgroundColor(getResources().getColor(android.R.color.white));
     }
 
     private void printWeek(Calendar calendar) {

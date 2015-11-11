@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.text.format.DateFormat;
 import android.view.MenuItem;
 import android.view.View;
@@ -89,7 +90,16 @@ public class daily_view extends AppCompatActivity implements OnClickListener{
                             startActivity(new Intent(daily_view.this, MainActivity.class));
                         } else if (item.getTitle().equals("Weekly View")) {
                             startActivity(new Intent(daily_view.this, weekly_view.class));
-                        } else {
+                        }
+                        else if(item.getTitle().equals("Delete Event"))
+                            startActivity(new Intent(daily_view.this, delete_event.class));
+                        else if(item.getTitle().equals("Edit Event"))
+                            startActivity(new Intent(daily_view.this, choose_edit_event.class));
+                        else if(item.getTitle().equals("Add Category"))
+                            startActivity(new Intent(daily_view.this, add_category.class));
+                        else if(item.getTitle().equals("Delete Category"))
+                            startActivity(new Intent(daily_view.this, delete_category.class));
+                        else {
                             Toast.makeText(
                                     daily_view.this,
                                     "Already showing " + item.getTitle(),
@@ -102,6 +112,20 @@ public class daily_view extends AppCompatActivity implements OnClickListener{
                 popup.show();
             }
         });
+
+        DatabaseHelper mDbHelper = new DatabaseHelper(getApplicationContext());
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        String selectQuery = "SELECT holidayName FROM holidays WHERE holidayDay = ? AND holidayMonth = ?";
+        Cursor selectCur = db.rawQuery(selectQuery, new String[]{day.toString(),month.toString()});
+        TextView tempDay = (TextView)findViewById(R.id.textViewDaily);
+        tempDay.setBackgroundColor(getResources().getColor(android.R.color.white));
+        if (selectCur.getCount() >= 1) {
+            selectCur.moveToFirst();
+            data += "Holiday Name: " + selectCur.getString(0) + "\n";
+            TextView day = (TextView)findViewById(R.id.textViewDaily);
+            day.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+
+        }
 
     }
 
@@ -136,6 +160,20 @@ public class daily_view extends AppCompatActivity implements OnClickListener{
         }
         calendar.set(year, month, day);
         currentDay.setText(DateFormat.format(dateTemplate, calendar.getTime()));
+        DatabaseHelper mDbHelper = new DatabaseHelper(getApplicationContext());
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        String selectQuery = "SELECT holidayName FROM holidays WHERE holidayDay = ? AND holidayMonth = ?";
+        Integer tempMonth = month + 1;
+        Cursor selectCur = db.rawQuery(selectQuery, new String[]{day.toString(),tempMonth.toString()});
+        TextView tempDay = (TextView)findViewById(R.id.textViewDaily);
+        tempDay.setBackgroundColor(getResources().getColor(android.R.color.white));
+        if (selectCur.getCount() >= 1) {
+            selectCur.moveToFirst();
+            data += "Holiday Name: " + selectCur.getString(0) + "\n";
+            TextView day = (TextView)findViewById(R.id.textViewDaily);
+            day.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+            Log.d("lol",data);
+        }
         makeView();
         //Check for events on new day and setButtonText to event title
     }
@@ -145,7 +183,7 @@ public class daily_view extends AppCompatActivity implements OnClickListener{
         SQLiteDatabase db;
         DatabaseHelper mDbHelper = new DatabaseHelper(this);
         db = mDbHelper.getWritableDatabase();
-        data = "";
+
         day = calendar.get(Calendar.DAY_OF_MONTH);
         month = calendar.get(Calendar.MONTH);
         year = calendar.get(Calendar.YEAR);
@@ -155,34 +193,65 @@ public class daily_view extends AppCompatActivity implements OnClickListener{
         c.set(year, month, day);
         c.setFirstDayOfWeek(Calendar.SUNDAY);
         Integer tempDayOfWeek = c.get(calendar.DAY_OF_WEEK);
-        Log.d("day of the week ","" + tempDayOfWeek + "day:" + day);
+        Log.d("day of the week ", "" + tempDayOfWeek + "day:" + day);
+        if(tempDayOfWeek == 1 || tempDayOfWeek == 7)
+        {
+            TextView tempDay2 = (TextView)findViewById(R.id.textViewDaily);
+            tempDay2.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_dark));
+        }
         String Query = "SELECT * FROM events WHERE (dayofweek = ? AND dayofweek != ?) OR (startDateMonth = ? AND startDateDay = ? AND startDateYear = ?) ORDER BY startTimeHour, startTimeMinute";
         if(db != null) {
-            Log.d("i'm"," here");
+            Log.d("i'm", " here");
             Cursor cur = db.rawQuery(Query, new String[]{tempDayOfWeek.toString(),"99",tempMonth.toString(), day.toString(), year.toString()});
             Log.d("count", "" + cur.getCount());
             if (cur.getCount() >= 1) {
                 cur.moveToFirst();
                 int x = 1;
                 while (cur.isAfterLast() == false){
+                    String QueryColor = "SELECT categoryColor FROM categories WHERE categoryName = ?";
+                    Cursor curColor = db.rawQuery(QueryColor, new String[]{cur.getString(16)});
+                    curColor.moveToFirst();
+                    if(curColor.getCount() >= 1)
+                        data += "<font color = '" + curColor.getString(0) + "'>";
                     x = 1;
-                    data+= "Event Name: " + cur.getString(x) + "\n";
+                    data+= "Event Name: " + cur.getString(x) + "<br>";
                     x = 8;
-                    data+= "Event Start Time: " + cur.getString(x++) + ":" + cur.getString(x++) + "\n";
-                    data+= "Event End Time: " + cur.getString(x++) + ":" + cur.getString(x++) + "\n";
-                    data+= "Event Location: " + cur.getString(x++) + "\n";
-                    data += "Event Description: " + cur.getString(x++) + "\n";
+                    data+= "Event Start Time: " + formatTime(cur.getString(x++),cur.getString(x++)) + "<br>";
+                    data+= "Event End Time: " + formatTime(cur.getString(x++),cur.getString(x++)) + "<br>";
+                    data+= "Event Location: " + cur.getString(x++) + "<br>";
+                    data += "Event Description: " + cur.getString(x++) + "<br>";
                     x += 2;
-                    data += "Event Category: " + cur.getString(x) + "\n\n\n";
+                    data += "Event Category: " + cur.getString(x) + "<br><br><br>";
+                    if(curColor.getCount() >= 1)
+                        data += "</font>";
                     cur.moveToNext();}
             }
 
         }
         TextView temp = (TextView)findViewById(R.id.textViewDaily);
-        temp.setText(data);
-
+        temp.setText(Html.fromHtml(data), TextView.BufferType.SPANNABLE);
+        data = "";
     }
 
+    private String formatTime(String hour, String minute)
+    {
+        String amOrPm = " AM";
+        String time = "";
+        if(Integer.parseInt(hour) >= 12) {
+            amOrPm = " PM";
+            Integer tempHour = Integer.parseInt(hour) % 12;
+            time = tempHour.toString();
+        }
+        else if(Integer.parseInt(hour) == 0)
+            time = "12";
+        else
+            time = hour;
+        if (minute.length() == 1)
+            time += ":0" + minute;
+        else
+            time += ":" + minute;
+        return time + amOrPm;
 
+    }
 
 }

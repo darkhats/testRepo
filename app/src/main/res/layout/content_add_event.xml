@@ -52,14 +52,14 @@
 
 
             <!--<Button-->
-                <!--android:id="@+id/selectedStartDate"-->
-                <!--android:layout_weight="1"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_width="0dip"-->
-                <!--android:background="@color/darkgray"-->
-                <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
-                <!--android:textColor="#000"-->
-                <!--android:layout_margin="2dip" />-->
+            <!--android:id="@+id/selectedStartDate"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_width="0dip"-->
+            <!--android:background="@color/darkgray"-->
+            <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+            <!--android:textColor="#000"-->
+            <!--android:layout_margin="2dip" />-->
 
             <Button
                 android:id="@+id/selectedEndDate"
@@ -141,20 +141,20 @@
                 android:layout_height="wrap_content" />
         </TableRow>
         <TableRow>
-        android:id="@+id/add_event_category_row"
-        android:layout_width="fill_parent"
-        android:layout_height="50dip"
-        android:padding="0dip"
-        android:background="@color/lightgray">
-        <TextView
-            android:id="@+id/add_event_category_label"
-            android:text="Category: "
-            style="@style/add_event_col"/>
-        <EditText
-            android:layout_weight="2"
-            android:id="@+id/add_event_category_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:id="@+id/add_event_category_row"
+            android:layout_width="fill_parent"
+            android:layout_height="50dip"
+            android:padding="0dip"
+            android:background="@color/lightgray">
+            <TextView
+                android:id="@+id/add_event_category_label"
+                android:text="Category: "
+                style="@style/add_event_col"/>
+            <EditText
+                android:layout_weight="2"
+                android:id="@+id/add_event_category_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </TableRow>
 
         <!-- Periodic? -->
@@ -174,17 +174,6 @@
                 android:layout_marginLeft="100dip"
                 android:checked="false" />
 
-            <Button
-                android:id="@+id/selectedStartDate"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_width="0dip"
-                android:background="@color/darkgray"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="#000"
-                android:layout_margin="2dip"
-                android:layout_column="1" />
-                android:layout_marginLeft="100dip" />
 
         </TableRow>
 

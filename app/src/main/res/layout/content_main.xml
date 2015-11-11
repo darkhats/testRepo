@@ -91,6 +91,9 @@
             android:numColumns="7">
         </GridView>
 
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
         <Button
             android:id="@+id/selectedDayMonthYear"
             android:layout_width="fill_parent"
@@ -100,6 +103,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#000">
         </Button>
+        </ScrollView>
 
     </LinearLayout>
 </RelativeLayout>

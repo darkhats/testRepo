@@ -30,6 +30,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </TableRow>
+
+        <TableRow>
+            <TextView
+                android:id="@+id/add_category_color_label"
+                android:text="Category Color: "
+                style="@style/add_event_col"/>
+            <EditText
+                android:layout_weight="2"
+                android:id="@+id/add_category_color_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+        <TextView
+            android:id="@+id/add_category_color_option_label"
+            android:text="Category Color Options: "
+            style="@style/add_event_col"/>
         <!-- Save Button -->
         <Button
             android:id="@+id/saveAddCategoryButton"

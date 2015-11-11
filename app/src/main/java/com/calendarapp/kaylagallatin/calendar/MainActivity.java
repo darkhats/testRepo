@@ -1,5 +1,6 @@
 package com.calendarapp.kaylagallatin.calendar;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,6 +39,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -67,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        createHolidayDb();
 
 
         _calendar = Calendar.getInstance(Locale.getDefault());
@@ -139,6 +142,31 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     }
 
 
+    private void createHolidayDb()
+    {
+        createHolidayDbHelper(25,12,"Christmas"); //Christmas
+        createHolidayDbHelper(11,11,"Veteran's Day"); //Veteran's Day
+        createHolidayDbHelper(14,2,"Valentine's Day"); //Valentine's Day
+        createHolidayDbHelper(4,7,"USA Independence Day"); //Independence Day (USA)
+        createHolidayDbHelper(31,10,"Halloween"); //Halloween
+        createHolidayDbHelper(1,1,"New Year's Day"); //New Year's Day
+    }
+
+    private void createHolidayDbHelper(Integer day, Integer month, String name)
+    {
+        DatabaseHelper mDbHelper = new DatabaseHelper(getApplicationContext());
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.HOLIDAYNAME,name);
+        values.put(DatabaseHelper.HOLIDAYDAY,day.toString());
+        values.put(DatabaseHelper.HOLIDAYMONTH,month.toString());
+        long newRowId;
+        newRowId = db.insert(
+                "holidays",
+                null,
+                values);
+    }
+
     private void setGridCellAdapterToDate(int month, int year) {
         adapter = new GridCellAdapter(getApplicationContext(),
                 R.id.calendar_day_gridcell, month, year);
@@ -151,6 +179,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
     @Override
     public void onClick(View v) {
+        selectedDayMonthYearButton.setText("");
+        selectedDayMonthYearButton.setBackgroundColor(getResources().getColor(android.R.color.white));
         if (v == prevMonth) {
             if (month <= 1) {
                 month = 12;
@@ -370,7 +400,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             calendarView.invalidateViews();
             String date_month_year = (String) view.getTag();
             String theseEvents = viewEvents(date_month_year);
-            selectedDayMonthYearButton.setText("Selected: " + date_month_year + "\n" + theseEvents);
+            selectedDayMonthYearButton.setText(Html.fromHtml("Selected: " + date_month_year + "<br>" + theseEvents), TextView.BufferType.SPANNABLE);
             try {
                 Date parsedDate = dateFormatter.parse(date_month_year);
             } catch (ParseException e) {
@@ -400,11 +430,33 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 Log.d("i'm"," here" + month + " " + Integer.parseInt(day) + " " + year);
                 Cursor cur = db.rawQuery(Query, new String[]{tempDayOfWeek.toString(),"99",month.toString(), day, year.toString()});
                 Log.d("count",""+cur.getCount());
+                String selectQuery = "SELECT holidayName FROM holidays WHERE holidayDay = ? AND holidayMonth = ?";
+                Cursor selectCur = db.rawQuery(selectQuery, new String[]{day.toString(),month.toString()});
+                TextView tempDay = (TextView)findViewById(R.id.selectedDayMonthYear);
+                tempDay.setBackgroundColor(getResources().getColor(android.R.color.white));
+                if (selectCur.getCount() >= 1) {
+                    selectCur.moveToFirst();
+                    data += "Holiday: " + selectCur.getString(0) + "\n";
+                    TextView weeklyDay = (TextView) findViewById(R.id.selectedDayMonthYear);
+                    weeklyDay.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+                }
+                if(tempDayOfWeek == 1 || tempDayOfWeek == 7) {
+                    TextView tempDay2 = (TextView) findViewById(R.id.selectedDayMonthYear);
+                    tempDay2.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_dark));
+                }
                 if (cur.getCount() >= 1) {
                     cur.moveToFirst();
+
                     int x = 1;
                     while (cur.isAfterLast() == false){
-                        data+= "Event Name: " + cur.getString(x)+"\n";
+                        String QueryColor = "SELECT categoryColor FROM categories WHERE categoryName = ?";
+                        Cursor curColor = db.rawQuery(QueryColor, new String[]{cur.getString(16)});
+                        curColor.moveToFirst();
+                        if(curColor.getCount() >= 1)
+                            data += "<font color = '" + curColor.getString(0) + "'>";
+                        data+= "Event Name: " + cur.getString(x)+"<br>";
+                        if(curColor.getCount() >= 1)
+                            data += "</font>";
                         cur.moveToNext();}
                 }
             }

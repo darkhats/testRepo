@@ -26,11 +26,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMNID = "_id";
     public static final String LOCATION = "location";
     public static final String DAYOFWEEK = "dayofweek";
-    private static final int DATABASE_VERSION = 87;
+    private static final int DATABASE_VERSION = 91;
     protected static final String TABLENAME2 = "categories";
     protected static final String CATEGORYNAME = "categoryName";
     protected static final String CATEGORY = "category";
-
+    protected static final String HOLIDAYDAY = "holidayDay";
+    protected static final String HOLIDAYMONTH = "holidayMonth";
+    protected static final String TABLENAME3 = "holidays";
+    protected static final String HOLIDAYNAME = "holidayName";
+    protected static final String CATEGORYCOLOR = "categoryColor";
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -55,7 +59,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 CATEGORY + " TEXT)");
 
         db.execSQL("CREATE TABLE " + TABLENAME2 + "(" + COLUMNID + " INTEGER PRIMARY KEY," +
-                CATEGORYNAME + " TEXT)");
+                CATEGORYNAME + " TEXT," +
+                CATEGORYCOLOR + " TEXT)");
+
+        db.execSQL("CREATE TABLE " + TABLENAME3 + "(" + COLUMNID + " INTEGER PRIMARY KEY," +
+                HOLIDAYNAME + " TEXT," +
+                HOLIDAYDAY + " INT," +
+                HOLIDAYMONTH +" INT)");
     }
 
 
@@ -64,8 +74,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         android.util.Log.v("Constants",
                 "Upgrading database which will destroy all old data");
-       db.execSQL("DROP TABLE IF EXISTS " + TABLENAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLENAME);
         db.execSQL("DROP TABLE IF EXISTS " + TABLENAME2);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLENAME3);
         onCreate(db);
     }
 }

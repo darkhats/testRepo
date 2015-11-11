@@ -16,9 +16,10 @@ import android.widget.Toast;
 
 
 public class choose_edit_event extends AppCompatActivity {
-    protected static String title = "ijoj";
-    protected static String description = "ioiuiu";
-    protected static String location = "uuju";
+    protected static String title = "";
+    protected static String description = "";
+    protected static String location = "";
+    protected static String category = "";
 
 
     @Override
@@ -33,7 +34,7 @@ public class choose_edit_event extends AppCompatActivity {
             public void onClick(View v) {
                 DatabaseHelper mDbHelper = new DatabaseHelper(getApplicationContext());
                 SQLiteDatabase db = mDbHelper.getWritableDatabase();
-                String selectQuery = "SELECT title,description,location FROM events WHERE title = ?";
+                String selectQuery = "SELECT title,description,location,category FROM events WHERE title = ?";
                 EditText selectTextTitle = (EditText) findViewById(R.id.choose_edit_event_title_edit);
                 Cursor selectCur = db.rawQuery(selectQuery, new String[]{selectTextTitle.getText().toString()});
                 if(selectCur.getCount() >= 1) {
@@ -41,6 +42,7 @@ public class choose_edit_event extends AppCompatActivity {
                     title = selectCur.getString(0);
                     description = selectCur.getString(1);
                     location = selectCur.getString(2);
+                    category = selectCur.getString(3);
                     selectCur.close();
                     String Query = "DELETE FROM events WHERE title = ?";
                     EditText editTextTitle = (EditText) findViewById(R.id.choose_edit_event_title_edit);

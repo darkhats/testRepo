@@ -46,6 +46,10 @@ public class add_event extends AppCompatActivity{
     public static TimePicker endTime;
     public static boolean isStartTime;
     public static  SQLiteDatabase db;
+    protected static boolean startTimeClicked = false;
+    protected static boolean endTimeClicked = false;
+    protected static boolean startDateClicked = false;
+    protected static boolean endDateClicked = false;
 
 
 
@@ -70,6 +74,7 @@ public class add_event extends AppCompatActivity{
         selectedEndDateButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 startActivity(new Intent(add_event.this, set_date.class));
+                endDateClicked = true;
             }
         });
 
@@ -78,7 +83,7 @@ public class add_event extends AppCompatActivity{
         selectedStartTimeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 startActivity(new Intent(add_event.this, set_time.class));
-
+                startTimeClicked = true;
                 isStartTime = true;
 
             }
@@ -89,7 +94,7 @@ public class add_event extends AppCompatActivity{
         selectedEndTimeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 startActivity(new Intent(add_event.this, set_time.class));
-
+                endTimeClicked = true;
                 isStartTime = false;
             }
         });
@@ -100,48 +105,52 @@ public class add_event extends AppCompatActivity{
             public void onClick(View v) {
                 DatabaseHelper mDbHelper = new DatabaseHelper(getApplicationContext());
                 db = mDbHelper.getWritableDatabase();
-                Log.d("timeHere", "" + endTime.getCurrentHour());
                 EditText editTextCategory = (EditText)findViewById(R.id.add_event_category_edit);
                 String QueryCat = "SELECT * FROM categories WHERE categoryName = ?";
                 Cursor curCat = db.rawQuery(QueryCat, new String[]{editTextCategory.getText().toString()});
-                if(editTextCategory.getText().toString().length() > 0 && curCat.getCount() == 0)
+                if (!endDateClicked || !endTimeClicked || !startTimeClicked) {
+                    Toast toastTime = Toast.makeText(add_event.this, "Looks like you forgot to set a date or time. Please do that. ", Toast.LENGTH_SHORT);
+                    toastTime.show();}
+                else
                 {
-                    Toast toastCat = Toast.makeText(add_event.this, "Invalid category. Please enter a valid category. " , Toast.LENGTH_SHORT);
-                    toastCat.show();
-                }
-                else {
-                    String Query = "SELECT * FROM events WHERE ((dayofweek = ? AND dayofweek != ?) OR (startDateMonth = ? AND startDateDay = ? AND startDateYear = ?))";
-                    Integer tempMonth = set_date.editTextStartDateMonth.getMonth() + 1;
-                    CheckBox box = (CheckBox) findViewById(R.id.chkWindows);
-                    GregorianCalendar temp = new GregorianCalendar(set_date.editTextStartDateMonth.getYear(), set_date.editTextStartDateMonth.getMonth(), set_date.editTextStartDateMonth.getDayOfMonth());
-                    Integer tempDayOfWeek = (box.isChecked() ? temp.get(temp.DAY_OF_WEEK) : 99);
-                    Integer tempDay = set_date.editTextStartDateMonth.getDayOfMonth();
-                    Integer tempYear = set_date.editTextStartDateMonth.getYear();
-                    Cursor cur = db.rawQuery(Query, new String[]{tempDayOfWeek.toString(), "99", tempMonth.toString(), tempDay.toString(), tempYear.toString()});
-                    boolean valid = true;
-                    if (cur.getCount() > 0) {
-                        cur.moveToFirst();
-                        while (cur.isAfterLast() == false) {
-                            int dbStartTime = Integer.parseInt(cur.getString(8)) * 60 + Integer.parseInt(cur.getString(9));
-                            int dbEndTime = Integer.parseInt(cur.getString(10)) * 60 + Integer.parseInt(cur.getString(11));
-                            int inputStartTime = startTime.getCurrentHour() * 60 + startTime.getCurrentMinute();
-                            int inputEndTime = endTime.getCurrentHour() * 60 + endTime.getCurrentMinute();
-
-                            if (dbStartTime <= inputStartTime && dbEndTime >= inputStartTime)
-                                valid = false;
-                            else if (dbStartTime <= inputEndTime && dbEndTime >= inputEndTime)
-                                valid = false;
-                            else if (inputStartTime <= dbStartTime && dbEndTime <= inputEndTime)
-                                valid = false;
-                            cur.moveToNext();
-                        }
+                    if (editTextCategory.getText().toString().length() > 0 && curCat.getCount() == 0) {
+                        Toast toastCat = Toast.makeText(add_event.this, "Invalid category. Please enter a valid category. ", Toast.LENGTH_SHORT);
+                        toastCat.show();
                     }
-                    if (valid) {
-                        saveEvent();
-                        finish();
-                    } else {
-                        Toast toast = Toast.makeText(add_event.this, "You're already busy during that time! Please choose another ", Toast.LENGTH_SHORT);
-                        toast.show();
+                    else {
+                        String Query = "SELECT * FROM events WHERE ((dayofweek = ? AND dayofweek != ?) OR (startDateMonth = ? AND startDateDay = ? AND startDateYear = ?))";
+                        Integer tempMonth = set_date.editTextStartDateMonth.getMonth() + 1;
+                        CheckBox box = (CheckBox) findViewById(R.id.chkWindows);
+                        GregorianCalendar temp = new GregorianCalendar(set_date.editTextStartDateMonth.getYear(), set_date.editTextStartDateMonth.getMonth(), set_date.editTextStartDateMonth.getDayOfMonth());
+                        Integer tempDayOfWeek = (box.isChecked() ? temp.get(temp.DAY_OF_WEEK) : 99);
+                        Integer tempDay = set_date.editTextStartDateMonth.getDayOfMonth();
+                        Integer tempYear = set_date.editTextStartDateMonth.getYear();
+                        Cursor cur = db.rawQuery(Query, new String[]{tempDayOfWeek.toString(), "99", tempMonth.toString(), tempDay.toString(), tempYear.toString()});
+                        boolean valid = true;
+                        if (cur.getCount() > 0) {
+                            cur.moveToFirst();
+                            while (cur.isAfterLast() == false) {
+                                int dbStartTime = Integer.parseInt(cur.getString(8)) * 60 + Integer.parseInt(cur.getString(9));
+                                int dbEndTime = Integer.parseInt(cur.getString(10)) * 60 + Integer.parseInt(cur.getString(11));
+                                int inputStartTime = startTime.getCurrentHour() * 60 + startTime.getCurrentMinute();
+                                int inputEndTime = endTime.getCurrentHour() * 60 + endTime.getCurrentMinute();
+
+                                if (dbStartTime <= inputStartTime && dbEndTime >= inputStartTime)
+                                    valid = false;
+                                else if (dbStartTime <= inputEndTime && dbEndTime >= inputEndTime)
+                                    valid = false;
+                                else if (inputStartTime <= dbStartTime && dbEndTime <= inputEndTime)
+                                    valid = false;
+                                cur.moveToNext();
+                            }
+                        }
+                        if (valid) {
+                            saveEvent();
+                            finish();
+                        } else {
+                            Toast toast = Toast.makeText(add_event.this, "You're already busy during that time!", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
                     }
                 }
             }
@@ -170,7 +179,7 @@ public class add_event extends AppCompatActivity{
     {
         DatabaseHelper mDbHelper = new DatabaseHelper(getApplicationContext());
         db = mDbHelper.getWritableDatabase();
-       GregorianCalendar temp = new GregorianCalendar(set_date.editTextStartDateMonth.getYear(),set_date.editTextStartDateMonth.getMonth(),set_date.editTextStartDateMonth.getDayOfMonth());
+        GregorianCalendar temp = new GregorianCalendar(set_date.editTextStartDateMonth.getYear(),set_date.editTextStartDateMonth.getMonth(),set_date.editTextStartDateMonth.getDayOfMonth());
         EditText editTextTitle = (EditText)findViewById(R.id.add_event_title_edit);
         EditText editTextDescription = (EditText)findViewById(R.id.add_event_description_edit);
         EditText editTextLocation = (EditText)findViewById(R.id.add_event_location_edit);

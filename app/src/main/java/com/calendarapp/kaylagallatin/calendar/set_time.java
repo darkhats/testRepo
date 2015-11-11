@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TimePicker;
 import android.util.Log;
-
+import android.widget.Toast;
 
 
 public class set_time extends AppCompatActivity {
@@ -45,7 +45,32 @@ public class set_time extends AppCompatActivity {
                     add_event.startTime = (TimePicker)findViewById(R.id.timePicker);
                 else
                     add_event.endTime = (TimePicker)findViewById(R.id.timePicker);
-                finish();
+                if(edit_event.startTimeClicked && !edit_event.isStartTime || !add_event.isStartTime && add_event.startTimeClicked)
+                {
+                      boolean startTimeAndEndTimeValid = true;
+                       if(edit_event.startTimeClicked)
+                       {
+                           int inputStartTime = edit_event.startTime.getCurrentHour() * 60 + edit_event.startTime.getCurrentMinute();
+                           int inputEndTime = edit_event.endTime.getCurrentHour() * 60 + edit_event.endTime.getCurrentMinute();
+                           startTimeAndEndTimeValid = inputEndTime >= inputStartTime;
+
+                       }
+                        else
+                       {
+                           int inputStartTime = add_event.startTime.getCurrentHour() * 60 + add_event.startTime.getCurrentMinute();
+                           int inputEndTime = add_event.endTime.getCurrentHour() * 60 + add_event.endTime.getCurrentMinute();
+                           startTimeAndEndTimeValid = inputEndTime >= inputStartTime;
+
+                       }
+                    if(startTimeAndEndTimeValid)
+                        finish();
+                    else {
+                        Toast toast = Toast.makeText(set_time.this, "You're end time is before your start time! Please choose another ", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                }
+                else
+                    finish();
              //   startActivity(new Intent(set_time.this, add_event.class));
             }
         });

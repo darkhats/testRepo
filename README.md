@@ -2,8 +2,9 @@
 CS3354 Android Calendar Project
 
 Opening the calendar will take you to the monthly view.
-navigate between months using the left and right arrows at the top of the screen.
-clicking on a day will display events for that day colored according to the event's category.
+Navigate between months using the left and right arrows at the top of the screen.
+Clicking on a day will display events for that day colored according to the event's category.
+If an event date has a "*" next to it, that means multiple events are taking place on that day.
 
 You can go to the weekly view by selecting "weekly view" from the menu.
 You can go to the daily view by selecting "daily view" from the menu.

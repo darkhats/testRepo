@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     @SuppressLint({ "NewApi", "NewApi", "NewApi", "NewApi" })
     private final DateFormat dateFormatter = new DateFormat();
     private static final String dateTemplate = "MMMM yyyy";
+    private Integer padding = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,19 +183,19 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         selectedDayMonthYearButton.setText("");
         selectedDayMonthYearButton.setBackgroundColor(getResources().getColor(android.R.color.white));
         if (v == prevMonth) {
-            if (month <= 1) {
+            if (month <= 1) { //If the current month is January, go back to December of the previous year
                 month = 12;
                 year--;
-            } else {
+            } else {  //Else, just go back a month
                 month--;
             }
             setGridCellAdapterToDate(month, year);
         }
         if (v == nextMonth) {
-            if (month > 11) {
+            if (month > 11) { //If the current month is December, go to January of the next year
                 month = 1;
                 year++;
-            } else {
+            } else { //Else, just go forward a month
                 month++;
             }
             setGridCellAdapterToDate(month, year);
@@ -214,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         private final List<String> list;
         private static final int DAY_OFFSET = 1;
         private final String[] weekdays = new String[] { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
-        private final int[] daysOfMonth = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+        private final int[] daysOfMonth = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }; //Array of the number of days in each month starting with January
         private int daysInMonth;
         private int currentDayOfMonth;
         private int currentWeekDay;
@@ -300,7 +301,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 else if (mm == 3)
                     ++daysInPrevMonth;
 
-            // Trailing Month days
+            // Trailing Month days (not in current Month)
             for (int i = 0; i < trailingSpaces; i++) {
                 list.add(String.valueOf((daysInPrevMonth - trailingSpaces + DAY_OFFSET) + i) + "-GREY" + "-" + getMonthAsString(prevMonth) + "-" + prevYear);
             }
@@ -308,13 +309,13 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             // Current Month Days
             for (int i = 1; i <= daysInMonth; i++) {
                 if (i == getCurrentDayOfMonth()) {
-                    list.add(String.valueOf(i) + "-BLUE" + "-" + getMonthAsString(currentMonth) + "-" + yy);
+                    list.add(String.valueOf(i) + "-BLUE" + "-" + getMonthAsString(currentMonth) + "-" + yy); //Current day is highlighted
                 } else {
-                    list.add(String.valueOf(i) + "-WHITE" + "-" + getMonthAsString(currentMonth) + "-" + yy);
+                    list.add(String.valueOf(i) + "-WHITE" + "-" + getMonthAsString(currentMonth) + "-" + yy); //Other days of month
                 }
             }
 
-            // Leading Month days
+            // Leading Month days (not in current Month)
             for (int i = 0; i < list.size() % 7; i++) {
                 list.add(String.valueOf(i + 1) + "-GREY" + "-" + getMonthAsString(nextMonth) + "-" + nextYear);
             }
@@ -362,12 +363,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         }
 
         @Override
-        public void onClick(View view) {
+        public void onClick(View view) { //When a calendar button is clicked
 
             calendarView.invalidateViews();
             String date_month_year = (String) view.getTag();
             String theseEvents = viewEvents(date_month_year);
-            selectedDayMonthYearButton.setText(Html.fromHtml("Date: " + date_month_year + "<br>" + theseEvents), TextView.BufferType.SPANNABLE);
+            selectedDayMonthYearButton.setText(Html.fromHtml("Date: " + date_month_year + theseEvents), TextView.BufferType.SPANNABLE); //Displays the date and events on that day
             try {
                 Date parsedDate = dateFormatter.parse(date_month_year);
             } catch (ParseException e) {
@@ -375,12 +376,14 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             }
         }
 
-        public String viewEvents(String date)
+        public String viewEvents(String date) //View events on selected day
         {
+            padding = 0; //Used for gridcell display issues
+            TextView temp = (TextView)findViewById(R.id.selectedDayMonthYear);
             SQLiteDatabase db;
             DatabaseHelper mDbHelper = new DatabaseHelper(getApplicationContext());
             db = mDbHelper.getReadableDatabase();
-            String data = "";
+            String data = " ";
             String Query = "SELECT * FROM events WHERE (dayofweek = ? AND dayofweek != ?) OR (startDateMonth = ? AND startDateDay = ? AND startDateYear = ?) ORDER BY startTimeHour, startTimeMinute";
             if(db != null) {
 
@@ -392,6 +395,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 c.setFirstDayOfWeek(Calendar.SUNDAY);
                 tempDayOfWeek = c.get(_calendar.DAY_OF_WEEK);
                 Cursor cur = db.rawQuery(Query, new String[]{tempDayOfWeek.toString(),"99",month.toString(), day, year.toString()});
+                if(cur.getCount()>=2)
+                    data += "*";
+                data += "<br>";
                 String selectQuery = "SELECT holidayName FROM holidays WHERE holidayDay = ? AND holidayMonth = ?";
                 Cursor selectCur = db.rawQuery(selectQuery, new String[]{day.toString(),month.toString()});
                 TextView tempDay = (TextView)findViewById(R.id.selectedDayMonthYear);
@@ -406,32 +412,50 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                     TextView tempDay2 = (TextView) findViewById(R.id.selectedDayMonthYear);
                     tempDay2.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_dark));
                 }
+                if(cur.getCount() >= 2) {
+                 if( selectCur.getCount() > 0) {
+                     padding += 200;
+                 }
+                    else {
+                     padding += 100;
+                 }
+                }
                 if (cur.getCount() >= 1) {
                     cur.moveToFirst();
-
                     int x = 1;
+                    int tempCount = 0;
                     while (cur.isAfterLast() == false){
                         String QueryColor = "SELECT categoryColor FROM categories WHERE categoryName = ?";
                         Cursor curColor = db.rawQuery(QueryColor, new String[]{cur.getString(16)});
                         curColor.moveToFirst();
-                        if(curColor.getCount() >= 1)
+                        if(curColor.getCount() >= 1) //If it has a category, display its color
+                        {
                             data += "<font color = '" + curColor.getString(0) + "'>";
-                            x = 1;
-                            data+= "Name: " + cur.getString(x) + "<br>";
-                            x = 8;
-                            data+= "Start Time: " + daily_view.formatTime(cur.getString(x++),cur.getString(x++)) + "<br>";
-                            data+= "End Time: " + daily_view.formatTime(cur.getString(x++), cur.getString(x++)) + "<br>";
-                            data+= "Location: " + cur.getString(x++) + "<br>";
-                            data += "Description: " + cur.getString(x++) + "<br>";
-                            x += 2;
-                            data += "Category: " + cur.getString(x) + "<br><br><br>";
-                        if(curColor.getCount() >= 1)
+                        }
+                        x = 1;
+                        data+= "Name: " + cur.getString(x) + "<br>";
+                        x = 8;
+                        data+= "Start Time: " + daily_view.formatTime(cur.getString(x++),cur.getString(x++)) + "<br>";
+                        data+= "End Time: " + daily_view.formatTime(cur.getString(x++), cur.getString(x++)) + "<br>";
+                        data+= "Location: " + cur.getString(x++) + "<br>";
+                        data += "Description: " + cur.getString(x++) + "<br>";
+                        x += 2;
+                        data += "Category: " + cur.getString(x) + "<br><br><br>";
+                        if(curColor.getCount() >= 1) //If it has a category, display its color
+                        {
                             data += "</font>";
-                        cur.moveToNext();}
-                }else{
+                        }
+                        if(cur.getCount() >= 2 && tempCount++ > 0) //If multiple events, adjust padding
+                        {
+                            padding += 500;
+                        }
+                        cur.moveToNext();} //Get next item in select database
+                }else
+                {
                     data += "No events scheduled today <br>";
                 }
             }
+            temp.setPadding(0,padding,0,0);
             return data;
         }
 

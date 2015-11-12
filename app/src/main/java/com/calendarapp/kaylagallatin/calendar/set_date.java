@@ -39,11 +39,9 @@ public class set_date extends AppCompatActivity {
         saveButton = (Button) this.findViewById(R.id.saveDateButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                editTextStartDateMonth = (DatePicker)findViewById(R.id.datePicker);
-                Log.d("the date", editTextStartDateMonth.toString());
+                editTextStartDateMonth = (DatePicker)findViewById(R.id.datePicker); //Saves date set
                 finish();
 
-             //   startActivity(new Intent(set_date.this, add_event.class));
             }
         });
     }

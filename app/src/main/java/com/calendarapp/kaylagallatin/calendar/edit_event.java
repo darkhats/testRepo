@@ -84,11 +84,11 @@ public class edit_event extends AppCompatActivity {
                 EditText editTextCategory = (EditText) findViewById(R.id.edit_event_category_edit);
                 String QueryCat = "SELECT * FROM categories WHERE categoryName = ?";
                 Cursor curCat = db.rawQuery(QueryCat, new String[]{editTextCategory.getText().toString()});
-                if (!endDateClicked || !endTimeClicked || !startTimeClicked) {
+                if (!endDateClicked || !endTimeClicked || !startTimeClicked) {//If times and dates aren't set
                     Toast toastTime = Toast.makeText(edit_event.this, "Looks like you forgot to set a date or time. Please do that. ", Toast.LENGTH_SHORT);
                     toastTime.show();}
                 else {
-                    if (editTextCategory.getText().toString().length() > 0 && curCat.getCount() == 0) {
+                    if (editTextCategory.getText().toString().length() > 0 && curCat.getCount() == 0) {//If a category is entered and that category is not in the database
                         Toast toastCat = Toast.makeText(edit_event.this, "Invalid category. Please enter a valid category. ", Toast.LENGTH_SHORT);
                         toastCat.show();
                     } else {
@@ -101,7 +101,7 @@ public class edit_event extends AppCompatActivity {
                         Integer tempYear = set_date.editTextStartDateMonth.getYear();
                         Cursor cur = db.rawQuery(Query, new String[]{tempDayOfWeek.toString(), "99", tempMonth.toString(), tempDay.toString(), tempYear.toString()});
                         boolean valid = true;
-                        if (cur.getCount() > 0) {
+                        if (cur.getCount() > 0) { //If there are other events on the same day, then conflicts of time are checked
                             cur.moveToFirst();
                             while (cur.isAfterLast() == false) {
                                 int dbStartTime = Integer.parseInt(cur.getString(8)) * 60 + Integer.parseInt(cur.getString(9));
@@ -109,11 +109,11 @@ public class edit_event extends AppCompatActivity {
                                 int inputStartTime = startTime.getCurrentHour() * 60 + startTime.getCurrentMinute();
                                 int inputEndTime = endTime.getCurrentHour() * 60 + endTime.getCurrentMinute();
 
-                                if (dbStartTime <= inputStartTime && dbEndTime >= inputStartTime)
+                                if (dbStartTime <= inputStartTime && dbEndTime >= inputStartTime) //Time conflict
                                     valid = false;
-                                else if (dbStartTime <= inputEndTime && dbEndTime >= inputEndTime)
+                                else if (dbStartTime <= inputEndTime && dbEndTime >= inputEndTime) //Time conflict
                                     valid = false;
-                                else if (inputStartTime <= dbStartTime && dbEndTime <= inputEndTime)
+                                else if (inputStartTime <= dbStartTime && dbEndTime <= inputEndTime) //Time conflict
                                     valid = false;
                                 cur.moveToNext();
                             }
@@ -131,7 +131,7 @@ public class edit_event extends AppCompatActivity {
         });
 
 
-        EditText editTextTitle = (EditText)findViewById(R.id.edit_event_title_edit);
+        EditText editTextTitle = (EditText) findViewById(R.id.edit_event_title_edit);
         editTextTitle.setText(choose_edit_event.title);
 
         EditText editTextLocation = (EditText)findViewById(R.id.edit_event_location_edit);

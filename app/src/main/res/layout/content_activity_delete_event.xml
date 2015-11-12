@@ -20,6 +20,7 @@
         android:stretchColumns="1,2">
 
     <TableRow>
+        <!-- Edit name to remove box -->
     <TextView
         android:id="@+id/delete_event_title_label"
         android:text="Event Name to Remove: "

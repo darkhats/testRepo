@@ -61,14 +61,6 @@ public class add_event extends AppCompatActivity{
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        selectedStartDateButton = (Button) this.findViewById(R.id.selectedStartDate);
-//        selectedStartDateButton.setText("Start");
-//        selectedStartDateButton.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                startActivity(new Intent(add_event.this, set_date.class));
-//            }
-//        });
-
         selectedEndDateButton = (Button) this.findViewById(R.id.selectedEndDate);
         selectedEndDateButton.setText("Date");
         selectedEndDateButton.setOnClickListener(new View.OnClickListener() {
@@ -108,12 +100,12 @@ public class add_event extends AppCompatActivity{
                 EditText editTextCategory = (EditText)findViewById(R.id.add_event_category_edit);
                 String QueryCat = "SELECT * FROM categories WHERE categoryName = ?";
                 Cursor curCat = db.rawQuery(QueryCat, new String[]{editTextCategory.getText().toString()});
-                if (!endDateClicked || !endTimeClicked || !startTimeClicked) {
+                if (!endDateClicked || !endTimeClicked || !startTimeClicked) { //If times and dates aren't set
                     Toast toastTime = Toast.makeText(add_event.this, "Looks like you forgot to set a date or time. Please do that. ", Toast.LENGTH_SHORT);
                     toastTime.show();}
                 else
                 {
-                    if (editTextCategory.getText().toString().length() > 0 && curCat.getCount() == 0) {
+                    if (editTextCategory.getText().toString().length() > 0 && curCat.getCount() == 0) { //If a category is entered and that category is not in the database
                         Toast toastCat = Toast.makeText(add_event.this, "Invalid category. Please enter a valid category. ", Toast.LENGTH_SHORT);
                         toastCat.show();
                     }
@@ -127,7 +119,7 @@ public class add_event extends AppCompatActivity{
                         Integer tempYear = set_date.editTextStartDateMonth.getYear();
                         Cursor cur = db.rawQuery(Query, new String[]{tempDayOfWeek.toString(), "99", tempMonth.toString(), tempDay.toString(), tempYear.toString()});
                         boolean valid = true;
-                        if (cur.getCount() > 0) {
+                        if (cur.getCount() > 0) { //If there are other events on the same day, then conflicts of time are checked
                             cur.moveToFirst();
                             while (cur.isAfterLast() == false) {
                                 int dbStartTime = Integer.parseInt(cur.getString(8)) * 60 + Integer.parseInt(cur.getString(9));
@@ -135,11 +127,11 @@ public class add_event extends AppCompatActivity{
                                 int inputStartTime = startTime.getCurrentHour() * 60 + startTime.getCurrentMinute();
                                 int inputEndTime = endTime.getCurrentHour() * 60 + endTime.getCurrentMinute();
 
-                                if (dbStartTime <= inputStartTime && dbEndTime >= inputStartTime)
+                                if (dbStartTime <= inputStartTime && dbEndTime >= inputStartTime) //Time conflict
                                     valid = false;
-                                else if (dbStartTime <= inputEndTime && dbEndTime >= inputEndTime)
+                                else if (dbStartTime <= inputEndTime && dbEndTime >= inputEndTime) //Time conflict
                                     valid = false;
-                                else if (inputStartTime <= dbStartTime && dbEndTime <= inputEndTime)
+                                else if (inputStartTime <= dbStartTime && dbEndTime <= inputEndTime) //Time conflict
                                     valid = false;
                                 cur.moveToNext();
                             }
@@ -155,27 +147,15 @@ public class add_event extends AppCompatActivity{
                 }
             }
         });
-
-
-
-
-
-
         backToCalendar = (Button) this.findViewById(R.id.backToCalendar);
         backToCalendar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 finish();
             }
         });
-
-
-
-
-
     }
 
-
-    protected void saveEvent()
+    protected void saveEvent() //Used to insert event into the database
     {
         DatabaseHelper mDbHelper = new DatabaseHelper(getApplicationContext());
         db = mDbHelper.getWritableDatabase();
@@ -200,19 +180,13 @@ public class add_event extends AppCompatActivity{
         values.put(DatabaseHelper.LOCATION,editTextLocation.getText().toString());
         values.put(DatabaseHelper.DESCRIPTION,editTextDescription.getText().toString());
         values.put(DatabaseHelper.PERIODIC,box.isChecked());
-        values.put(DatabaseHelper.DAYOFWEEK,(box.isChecked()?temp.get(temp.DAY_OF_WEEK):99));
+        values.put(DatabaseHelper.DAYOFWEEK,(box.isChecked()?temp.get(temp.DAY_OF_WEEK):99)); //If the periodic box is checked, fill with the number of the day of the week
         values.put(DatabaseHelper.CATEGORY,editTextCategory.getText().toString());
         long newRowId;
         newRowId = db.insert(
                 "events",
                 null,
                 values);
-
-        String Query = "SELECT * FROM events";
-        Cursor cur = db.rawQuery(Query,null);
-        if(cur.moveToFirst())
-            for(int k = 1; k < 16; k++)
-                Log.d("Item: ",cur.getString(k));
 
     }
 

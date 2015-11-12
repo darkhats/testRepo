@@ -18,7 +18,6 @@
         android:background="@color/lightgray"
         android:padding="5dip"
         android:stretchColumns="1,2">
-
         <TableRow>
             <TextView
                 android:id="@+id/add_category_title_label"

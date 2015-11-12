@@ -28,14 +28,9 @@ public class delete_category extends AppCompatActivity {
                 SQLiteDatabase db = mDbHelper.getWritableDatabase();
                 EditText editTextTitle = (EditText) findViewById(R.id.delete_category_title_edit);
                 String Query = "DELETE FROM categories WHERE categoryName = ?";
-                Cursor cur = db.rawQuery(Query, new String[]{editTextTitle.getText().toString()});
-                String Query3 = "Select * FROM events WHERE category = ?";
-                Cursor cur3 = db.rawQuery(Query3, new String[]{editTextTitle.getText().toString()});
-                Log.d("cur3",""+cur3.getCount());
+                Cursor cur = db.rawQuery(Query, new String[]{editTextTitle.getText().toString()}); //Deletes the category from the database
                 String Query2 = "UPDATE events SET category = ? WHERE category = ?";
-                Cursor cur2 = db.rawQuery(Query2, new String[]{"",editTextTitle.getText().toString()});
-                Log.d("cur2",""+cur2.getCount());
-                Log.d("cat",editTextTitle.getText().toString());
+                Cursor cur2 = db.rawQuery(Query2, new String[]{"",editTextTitle.getText().toString()});//Removes the category that was deleted from any events that were labeled with that category
                 finish();
             }
         });

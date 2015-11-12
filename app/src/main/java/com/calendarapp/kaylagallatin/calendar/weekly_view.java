@@ -133,7 +133,7 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
         menuButton = (Button) findViewById(R.id.menu);
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) { //Sets menu option functionality
                 PopupMenu popup = new PopupMenu(weekly_view.this, menuButton);
                 popup.getMenuInflater().inflate(R.menu.views_menu, popup.getMenu());
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -167,7 +167,7 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
         printWeek(calendar);
     }
 
-    public void viewEvents(int dayofWeekNumber)
+    public void viewEvents(int dayofWeekNumber) //View events for day selected
     {
         DatabaseHelper mDbHelper = new DatabaseHelper(getApplicationContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -188,17 +188,17 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
         Cursor selectCur = db.rawQuery(selectQuery, new String[]{day.toString(),tempMonth.toString()});
         TextView tempDay = (TextView)findViewById(R.id.weeklyEditText);
         tempDay.setBackgroundColor(getResources().getColor(android.R.color.white));
-        if (selectCur.getCount() >= 1) {
+        if (selectCur.getCount() >= 1) { //If any holidays occur on this day, change the background color to green
             selectCur.moveToFirst();
             data += "Holiday: " + selectCur.getString(0) + "<br>";
             TextView weeklyDay = (TextView) findViewById(R.id.weeklyEditText);
             weeklyDay.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
         }
-        if(dayOfWeek == 0 || dayOfWeek == 1) {
+        if(dayOfWeek == 0 || dayOfWeek == 1) { //If it's a weekend, set the color to blue
             TextView tempDay2 = (TextView) findViewById(R.id.weeklyEditText);
             tempDay2.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_dark));
         }
-        if(cur.getCount() > 0)
+        if(cur.getCount() > 0) //If there are events on the day selected, display them
         {
             cur.moveToFirst();
             data += "<br><br>";
@@ -208,8 +208,9 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
                 String QueryColor = "SELECT categoryColor FROM categories WHERE categoryName = ?";
                 Cursor curColor = db.rawQuery(QueryColor, new String[]{cur.getString(16)});
                 curColor.moveToFirst();
-                if(curColor.getCount() >= 1)
+                if(curColor.getCount() >= 1) { //If the event has a category, display it in its color
                     data += "<font color = '" + curColor.getString(0) + "'>";
+                }
                     x = 1;
                     data+= "Name: " + cur.getString(x) + "<br>";
                     x = 8;
@@ -219,20 +220,21 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
                     data += "Description: " + cur.getString(x++) + "<br>";
                     x += 2;
                     data += "Category: " + cur.getString(x) + "<br><br><br>";
-                if(curColor.getCount() >= 1)
+                if(curColor.getCount() >= 1) {
                     data += "</font>";
+                }
                 cur.moveToNext();
             }
 
         }else{
             data += "No events scheduled today <br>";
         }
-        eventList.setText(Html.fromHtml(data), TextView.BufferType.SPANNABLE);
+        eventList.setText(Html.fromHtml(data), TextView.BufferType.SPANNABLE); //Show events
     }
 
     public void setCalWeekDay(Calendar calendar){
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-        while(dayOfWeek > 1){
+        while(dayOfWeek > 1){ //Move to beginning of week
             if(month == 0 && day == 1){
                 year--;
                 month = 11;
@@ -253,7 +255,7 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
     public void onClick(View v) {
         TextView eventList = (TextView)findViewById(R.id.weeklyEditText);
         eventList.setText("");
-        if (v == prevWeek) {
+        if (v == prevWeek) { //If going back a week, change view to previous week
             if(month == 0 && day < 8) {
                 year--;
                 month = 11;
@@ -266,7 +268,7 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
             else if(day >= 8){
                 day-= 7;
             }
-        }else if (v == nextWeek) {
+        }else if (v == nextWeek) { //If going forward a week, change view to next week
             if(month == 11 && day == 31){
                 year++;
                 month = 0;
@@ -293,7 +295,7 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
         cMonth = calendar.get(Calendar.MONTH);
         cYear = calendar.get(Calendar.YEAR);
         CharSequence lastDay = "";
-        for(int k = 0; k < 7; k++) {
+        for(int k = 0; k < 7; k++) { //k == day of week, where 0 = sunday, 1 = monday etc.
             Integer dayofMonth = calendar.get(Calendar.DAY_OF_MONTH);
             if (k == 0) {
                 Button temp = (Button) findViewById(R.id.sunday);
@@ -328,11 +330,11 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
                 incrementDay(calendar);
         }
 
-        currentWeek.setText(String.valueOf(firstDay) + " -\n" + String.valueOf(lastDay));
+        currentWeek.setText(String.valueOf(firstDay) + " -\n" + String.valueOf(lastDay)); //Sets week view at top
     }
 
-    private void incrementDay(Calendar calendar){
-        if(month == 11 && day == 31){
+    private void incrementDay(Calendar calendar){ //move day in year
+        if(month == 11 && day == 31){ //if it's the last day of the year
             year++;
             month = 0;
             day = 1;
@@ -345,7 +347,7 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
         calendar.set(year, month, day);
     }
 
-    private void incrementDay(Calendar calendar, int tempDay, int tempMonth, int tempYear){
+    private void incrementDay(Calendar calendar, int tempDay, int tempMonth, int tempYear){ //move day in year given local variables
         if(tempMonth == 11 && tempDay == 31){
             tempYear++;
             tempMonth = 0;

@@ -1,5 +1,5 @@
 package com.calendarapp.kaylagallatin.calendar;
-
+//Used to choose the event to edit
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -36,7 +36,7 @@ public class choose_edit_event extends AppCompatActivity {
                 String selectQuery = "SELECT title,description,location,category FROM events WHERE title = ?";
                 EditText selectTextTitle = (EditText) findViewById(R.id.choose_edit_event_title_edit);
                 Cursor selectCur = db.rawQuery(selectQuery, new String[]{selectTextTitle.getText().toString()});
-                if(selectCur.getCount() >= 1) {
+                if(selectCur.getCount() >= 1) { //If the event is in the database, populate the edit screen with the record's info and move to edit event screen
                     selectCur.moveToFirst();
                     title = selectCur.getString(0);
                     description = selectCur.getString(1);
@@ -45,9 +45,8 @@ public class choose_edit_event extends AppCompatActivity {
                     selectCur.close();
                     String Query = "DELETE FROM events WHERE title = ?";
                     EditText editTextTitle = (EditText) findViewById(R.id.choose_edit_event_title_edit);
-                    Log.d("event title",editTextTitle.getText().toString());
-                    Cursor cur = db.rawQuery(Query, new String[]{editTextTitle.getText().toString()});
-                    Log.d("cur size edit ",""+cur.getCount()); //DON"T REMOVE
+                    Cursor cur = db.rawQuery(Query, new String[]{editTextTitle.getText().toString()}); //Deletes the old event from the database
+                    Log.d("cur size edit ",""+cur.getCount()); //DON'T REMOVE
                     startActivity(new Intent(choose_edit_event.this, edit_event.class));
                     finish();
                 }

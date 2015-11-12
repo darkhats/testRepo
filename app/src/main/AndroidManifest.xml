@@ -54,11 +54,6 @@
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity
-            android:name=".view_event"
-            android:label="@string/title_activity_view_event"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
-        <activity
             android:name=".edit_event"
             android:label="@string/title_activity_edit_event"
             android:theme="@style/AppTheme.NoActionBar" >

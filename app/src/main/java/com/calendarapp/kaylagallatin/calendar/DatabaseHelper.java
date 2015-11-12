@@ -56,22 +56,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 DESCRIPTION + " TEXT," +
                 PERIODIC + " INT," +
                 DAYOFWEEK + " INT," +
-                CATEGORY + " TEXT)");
+                CATEGORY + " TEXT)"); //Events table creation
 
         db.execSQL("CREATE TABLE " + TABLENAME2 + "(" + COLUMNID + " INTEGER PRIMARY KEY," +
                 CATEGORYNAME + " TEXT," +
-                CATEGORYCOLOR + " TEXT)");
+                CATEGORYCOLOR + " TEXT)"); //Category Table creation
 
         db.execSQL("CREATE TABLE " + TABLENAME3 + "(" + COLUMNID + " INTEGER PRIMARY KEY," +
                 HOLIDAYNAME + " TEXT," +
                 HOLIDAYDAY + " INT," +
-                HOLIDAYMONTH +" INT)");
+                HOLIDAYMONTH +" INT)"); //Holiday table creation
     }
 
 
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) { //Called if DB schema changes
         android.util.Log.v("Constants",
                 "Upgrading database which will destroy all old data");
         db.execSQL("DROP TABLE IF EXISTS " + TABLENAME);

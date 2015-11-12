@@ -34,7 +34,7 @@ public class daily_view extends AppCompatActivity implements OnClickListener{
     private ImageView prevDay;
     private ImageView nextDay;
     private Integer day, month, year;
-    private final int[] monthDays = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+    private final int[] monthDays = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };//Array of the number of days in each month starting with January
     public String data = " ";
 
     @Override
@@ -64,11 +64,11 @@ public class daily_view extends AppCompatActivity implements OnClickListener{
                 startActivity(new Intent(daily_view.this, add_event.class));
             }
         });
-
+        //Adds functionality to top left button
         menuButton = (Button) findViewById(R.id.menu);
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) { //Gives the menu button functionality
                 PopupMenu popup = new PopupMenu(daily_view.this, menuButton);
                 popup.getMenuInflater().inflate(R.menu.views_menu, popup.getMenu());
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -106,9 +106,9 @@ public class daily_view extends AppCompatActivity implements OnClickListener{
         Cursor selectCur = db.rawQuery(selectQuery, new String[]{day.toString(),month.toString()});
         TextView tempDay = (TextView)findViewById(R.id.textViewDaily);
         tempDay.setBackgroundColor(getResources().getColor(android.R.color.white));
-        if (selectCur.getCount() >= 1) {
+        if (selectCur.getCount() >= 1) { //If today is a holiday, display the holiday and set the background color to green
             selectCur.moveToFirst();
-            data += "Holiday Name: " + selectCur.getString(0) + "<br>";
+            data += "Holiday: " + selectCur.getString(0) + "<br>";
             TextView day = (TextView)findViewById(R.id.textViewDaily);
             day.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
 
@@ -122,7 +122,7 @@ public class daily_view extends AppCompatActivity implements OnClickListener{
 
     @Override
     public void onClick(View v) {
-        if (v == prevDay) {
+        if (v == prevDay) { //If we are going back a day, go to the previous day
             if(month == 0 && day == 1){
                 year--;
                 month = 11;
@@ -133,7 +133,7 @@ public class daily_view extends AppCompatActivity implements OnClickListener{
             }else{
                 day--;
             }
-        }else if (v == nextDay) {
+        }else if (v == nextDay) { //If we are going forward a day, go to the next day
             if(month == 11 && day == 31){
                 year++;
                 month = 0;
@@ -154,9 +154,9 @@ public class daily_view extends AppCompatActivity implements OnClickListener{
         Cursor selectCur = db.rawQuery(selectQuery, new String[]{day.toString(),tempMonth.toString()});
         TextView tempDay = (TextView)findViewById(R.id.textViewDaily);
         tempDay.setBackgroundColor(getResources().getColor(android.R.color.white));
-        if (selectCur.getCount() >= 1) {
+        if (selectCur.getCount() >= 1) { //If today is a holiday, display the holiday and set the background color to green
             selectCur.moveToFirst();
-            data += "Holiday Name: " + selectCur.getString(0) + "\n";
+            data += "Holiday: " + selectCur.getString(0) + "<br>";
             TextView day = (TextView)findViewById(R.id.textViewDaily);
             day.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
         }
@@ -188,14 +188,14 @@ public class daily_view extends AppCompatActivity implements OnClickListener{
         String Query = "SELECT * FROM events WHERE (dayofweek = ? AND dayofweek != ?) OR (startDateMonth = ? AND startDateDay = ? AND startDateYear = ?) ORDER BY startTimeHour, startTimeMinute";
         if(db != null) {
             Cursor cur = db.rawQuery(Query, new String[]{tempDayOfWeek.toString(),"99",tempMonth.toString(), day.toString(), year.toString()});
-            if (cur.getCount() >= 1) {
+            if (cur.getCount() >= 1) { //If there is an event on this day
                 cur.moveToFirst();
                 int x = 1;
-                while (cur.isAfterLast() == false){
+                while (cur.isAfterLast() == false){ //While we have not displayed all of the events for this day
                     String QueryColor = "SELECT categoryColor FROM categories WHERE categoryName = ?";
                     Cursor curColor = db.rawQuery(QueryColor, new String[]{cur.getString(16)});
                     curColor.moveToFirst();
-                    if(curColor.getCount() >= 1)
+                    if(curColor.getCount() >= 1) //If the event has a category, display it in its color
                         data += "<font color = '" + curColor.getString(0) + "'>";
                     x = 1;
                     data+= "Name: " + cur.getString(x) + "<br>";
@@ -219,7 +219,7 @@ public class daily_view extends AppCompatActivity implements OnClickListener{
         data = " ";
     }
 
-    protected static String formatTime(String hour, String minute)
+    protected static String formatTime(String hour, String minute) //Changes 24 hour clock time to a 12 hour clock time
     {
         String amOrPm = " AM";
         String time = "";

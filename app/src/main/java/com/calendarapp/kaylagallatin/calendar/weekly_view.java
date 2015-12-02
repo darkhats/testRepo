@@ -295,39 +295,61 @@ public class weekly_view extends AppCompatActivity implements OnClickListener{
         cMonth = calendar.get(Calendar.MONTH);
         cYear = calendar.get(Calendar.YEAR);
         CharSequence lastDay = "";
+        DatabaseHelper mDbHelper = new DatabaseHelper(getApplicationContext());
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        String selectQuery = "SELECT * FROM events WHERE startDateDay = ? AND startDateMonth = ? AND startDateYear = ?";
+        String holidayQuery = "SELECT holidayName FROM holidays WHERE holidayDay = ? AND holidayMonth = ?";
         for(int k = 0; k < 7; k++) { //k == day of week, where 0 = sunday, 1 = monday etc.
             Integer dayofMonth = calendar.get(Calendar.DAY_OF_MONTH);
+            Cursor selectCur = db.rawQuery(selectQuery, new String[]{"" + dayofMonth, "" + (cMonth + 1), "" + cYear});
+            selectCur.moveToFirst();
+            Cursor holidayCur = db.rawQuery(holidayQuery, new String[]{"" + dayofMonth, "" + (cMonth + 1)});
+            holidayCur.moveToFirst();
+            Button temp;
             if (k == 0) {
-                Button temp = (Button) findViewById(R.id.sunday);
+                temp = (Button) findViewById(R.id.sunday);
+                temp.setText(dayofMonth.toString());
+                temp.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_dark));
+            }
+            else if (k == 1) {
+                temp = (Button) findViewById(R.id.monday);
                 temp.setText(dayofMonth.toString());
             }
-            if (k == 1) {
-                Button temp = (Button) findViewById(R.id.monday);
+            else if (k == 2) {
+                temp = (Button) findViewById(R.id.tuesday);
                 temp.setText(dayofMonth.toString());
             }
-            if (k == 2) {
-                Button temp = (Button) findViewById(R.id.tuesday);
+            else if (k == 3) {
+                temp = (Button) findViewById(R.id.wednesday);
                 temp.setText(dayofMonth.toString());
             }
-            if (k == 3) {
-                Button temp = (Button) findViewById(R.id.wednesday);
+            else if (k == 4) {
+                temp = (Button) findViewById(R.id.thursday);
                 temp.setText(dayofMonth.toString());
             }
-            if (k == 4) {
-                Button temp = (Button) findViewById(R.id.thursday);
+            else if (k == 5) {
+                temp = (Button) findViewById(R.id.friday);
                 temp.setText(dayofMonth.toString());
             }
-            if (k == 5) {
-                Button temp = (Button) findViewById(R.id.friday);
+            else {
+                temp = (Button) findViewById(R.id.saturday);
                 temp.setText(dayofMonth.toString());
-            }
-            if (k == 6) {
-                Button temp = (Button) findViewById(R.id.saturday);
-                temp.setText(dayofMonth.toString());
+                temp.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_dark));
                 lastDay = DateFormat.format(dateTemplate, calendar.getTime());
             }
             if (k != 6)
                 incrementDay(calendar);
+            temp.setTextColor(getResources().getColor(android.R.color.black));
+            if (selectCur.getCount() > 0) //If there are events scheduled, change day color
+            {
+                temp.setTextColor(getResources().getColor(android.R.color.holo_purple));
+            }
+            if (holidayCur.getCount() > 0) //If there is a holiday, set the button for that day to green
+                temp.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+            if(holidayCur.getCount() == 0 && k != 6 && k != 0) //If the day is not a holiday nor a weekend, set button color to grey
+                temp.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+            selectCur.close();
+            holidayCur.close();
         }
 
         currentWeek.setText(String.valueOf(firstDay) + " -\n" + String.valueOf(lastDay)); //Sets week view at top

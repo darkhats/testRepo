@@ -91,6 +91,18 @@ public class add_event extends AppCompatActivity{
             }
         });
 
+        EditText addTextTitle = (EditText) findViewById(R.id.add_event_title_edit);
+        addTextTitle.setText(choose_edit_event.title);
+
+        EditText addTextLocation = (EditText)findViewById(R.id.add_event_location_edit);
+        addTextLocation.setText(choose_edit_event.location);
+
+        EditText addTextDescription = (EditText)findViewById(R.id.add_event_description_edit);
+        addTextDescription.setText(choose_edit_event.description);
+
+        EditText addTextCategory = (EditText)findViewById(R.id.add_event_category_edit);
+        addTextCategory.setText(choose_edit_event.category);
+
         selectedSaveButton = (Button) this.findViewById(R.id.saveAddEventButton);
         selectedSaveButton.setText("Save");
         selectedSaveButton.setOnClickListener(new View.OnClickListener() {
@@ -195,6 +207,10 @@ public class add_event extends AppCompatActivity{
                 "events",
                 null,
                 values);
+        choose_edit_event.description = "";
+        choose_edit_event.category = "";
+        choose_edit_event.title = "";
+        choose_edit_event.location = "";
 
     }
 

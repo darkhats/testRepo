@@ -44,10 +44,10 @@ public class choose_edit_event extends AppCompatActivity {
                     category = selectCur.getString(3);
                     selectCur.close();
                     String Query = "DELETE FROM events WHERE title = ?";
-                    EditText editTextTitle = (EditText) findViewById(R.id.choose_edit_event_title_edit);
-                    Cursor cur = db.rawQuery(Query, new String[]{editTextTitle.getText().toString()}); //Deletes the old event from the database
+                    Cursor cur = db.rawQuery(Query, new String[]{selectTextTitle.getText().toString()}); //Deletes the old event from the database
                     Log.d("cur size edit ",""+cur.getCount()); //DON'T REMOVE
-                    startActivity(new Intent(choose_edit_event.this, edit_event.class));
+                    cur.close();
+                    startActivity(new Intent(choose_edit_event.this, add_event.class));
                     finish();
                 }
                 else

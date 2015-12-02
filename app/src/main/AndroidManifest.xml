@@ -53,21 +53,8 @@
             android:label="@string/title_activity_weekly_view"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
-        <activity
-            android:name=".edit_event"
-            android:label="@string/title_activity_edit_event"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
-        <activity
-            android:name=".activity_delete_event"
-            android:label="@string/title_activity_activity_delete_event"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
-        <activity
-            android:name=".choose_edit_event"
-            android:label="@string/title_activity_choose_edit_event"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
+
+
         <activity
             android:name=".add_category"
             android:label="@string/title_activity_add_category"

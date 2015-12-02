@@ -37,31 +37,18 @@ public class set_time extends AppCompatActivity {
         saveButton = (Button) this.findViewById(R.id.saveTimeButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(edit_event.startTimeClicked && edit_event.isStartTime) //if user clicked start time for edit event, set its start time
-                    edit_event.startTime = (TimePicker)findViewById(R.id.timePicker);
-                else if(edit_event.endTimeClicked) //if user clicked end time for edit event, set its start time
-                    edit_event.endTime = (TimePicker)findViewById(R.id.timePicker);
-                else if(add_event.isStartTime) //if user clicked start time for add event, set its start time
+                if(add_event.isStartTime) //if user clicked start time for add event, set its start time
                     add_event.startTime = (TimePicker)findViewById(R.id.timePicker);
                 else //if user clicked end time for add event, set its start time
                     add_event.endTime = (TimePicker)findViewById(R.id.timePicker);
-                if(edit_event.startTimeClicked && !edit_event.isStartTime || !add_event.isStartTime && add_event.startTimeClicked) //Makes sure start time and end time have been clicked
+                if(!add_event.isStartTime && add_event.startTimeClicked) //Makes sure start time and end time have been clicked
                 {
                       boolean startTimeAndEndTimeValid = true;
-                       if(edit_event.startTimeClicked && edit_event.endTimeClicked) //checks id start time <= end time
-                       {
-                           int inputStartTime = edit_event.startTime.getCurrentHour() * 60 + edit_event.startTime.getCurrentMinute();
-                           int inputEndTime = edit_event.endTime.getCurrentHour() * 60 + edit_event.endTime.getCurrentMinute();
-                           startTimeAndEndTimeValid = inputEndTime >= inputStartTime;
 
-                       }
-                        else //checks id start time <= end time
-                       {
                            int inputStartTime = add_event.startTime.getCurrentHour() * 60 + add_event.startTime.getCurrentMinute();
                            int inputEndTime = add_event.endTime.getCurrentHour() * 60 + add_event.endTime.getCurrentMinute();
                            startTimeAndEndTimeValid = inputEndTime >= inputStartTime;
 
-                       }
                     if(startTimeAndEndTimeValid)
                         finish();
                     else { //if start time is after end time

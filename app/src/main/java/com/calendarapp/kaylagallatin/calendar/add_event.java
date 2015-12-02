@@ -100,9 +100,17 @@ public class add_event extends AppCompatActivity{
                 EditText editTextCategory = (EditText)findViewById(R.id.add_event_category_edit);
                 String QueryCat = "SELECT * FROM categories WHERE categoryName = ?";
                 Cursor curCat = db.rawQuery(QueryCat, new String[]{editTextCategory.getText().toString()});
+                EditText editTextTitle = (EditText)findViewById(R.id.add_event_title_edit);
+                String queryTitle = "SELECT title FROM events WHERE title = ?";
+                Cursor curTitle = db.rawQuery(queryTitle, new String[]{editTextTitle.getText().toString()});
+                curTitle.moveToFirst();
                 if (!endDateClicked || !endTimeClicked || !startTimeClicked) { //If times and dates aren't set
                     Toast toastTime = Toast.makeText(add_event.this, "Looks like you forgot to set a date or time. Please do that. ", Toast.LENGTH_SHORT);
                     toastTime.show();}
+                else if(curTitle.getCount() > 0){
+                    Toast toastTitle = Toast.makeText(add_event.this, "The event name entered is already being used. Please select another ", Toast.LENGTH_SHORT);
+                    toastTitle.show();
+                }
                 else
                 {
                     if (editTextCategory.getText().toString().length() > 0 && curCat.getCount() == 0) { //If a category is entered and that category is not in the database

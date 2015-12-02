@@ -225,7 +225,7 @@ public class daily_view extends AppCompatActivity implements OnClickListener{
         String time = "";
         if(Integer.parseInt(hour) >= 12) {
             amOrPm = " PM";
-            Integer tempHour = Integer.parseInt(hour) % 12;
+            Integer tempHour = (Integer.parseInt(hour) == 12 ? 12:Integer.parseInt(hour) % 12);
             time = tempHour.toString();
         }
         else if(Integer.parseInt(hour) == 0)

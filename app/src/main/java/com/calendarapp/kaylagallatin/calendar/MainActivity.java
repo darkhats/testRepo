@@ -307,12 +307,26 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             }
 
             // Current Month Days
+            DatabaseHelper mDbHelper = new DatabaseHelper(getApplicationContext());
+            SQLiteDatabase db = mDbHelper.getWritableDatabase();
             for (int i = 1; i <= daysInMonth; i++) {
-                if (i == getCurrentDayOfMonth()) {
+                String selectQuery = "SELECT * FROM events WHERE startDateDay = ? AND startDateMonth = ? AND startDateYear = ?";
+                Cursor selectCur = db.rawQuery(selectQuery, new String[]{""+i,""+mm,""+yy});
+                selectCur.moveToFirst();
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                if (i == getCurrentDayOfMonth() && mm == month + 1 && yy == year) {
                     list.add(String.valueOf(i) + "-BLUE" + "-" + getMonthAsString(currentMonth) + "-" + yy); //Current day is highlighted
-                } else {
+                }
+                else if(selectCur.getCount() > 0)
+                {
+                    list.add(String.valueOf(i) + "-GREEN" + "-" + getMonthAsString(currentMonth) + "-" + yy);
+                }
+                else {
                     list.add(String.valueOf(i) + "-WHITE" + "-" + getMonthAsString(currentMonth) + "-" + yy); //Other days of month
                 }
+                selectCur.close();
             }
 
             // Leading Month days (not in current Month)
@@ -357,6 +371,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             }
             if (day_color[1].equals("BLUE")) {
                 gridcell.setTextColor(getResources().getColor(R.color.orange));
+            }
+            if (day_color[1].equals("GREEN"))
+            {
+                gridcell.setTextColor(getResources().getColor(R.color.lightgreen));
             }
 
             return row;

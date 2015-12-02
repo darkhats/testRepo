@@ -48,7 +48,7 @@ public class set_time extends AppCompatActivity {
                 if(edit_event.startTimeClicked && !edit_event.isStartTime || !add_event.isStartTime && add_event.startTimeClicked) //Makes sure start time and end time have been clicked
                 {
                       boolean startTimeAndEndTimeValid = true;
-                       if(edit_event.startTimeClicked) //checks id start time <= end time
+                       if(edit_event.startTimeClicked && edit_event.endTimeClicked) //checks id start time <= end time
                        {
                            int inputStartTime = edit_event.startTime.getCurrentHour() * 60 + edit_event.startTime.getCurrentMinute();
                            int inputEndTime = edit_event.endTime.getCurrentHour() * 60 + edit_event.endTime.getCurrentMinute();

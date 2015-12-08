@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_weekly_view"
+    tools:context=".weekly_view"
+    android:background="@color/lightgray">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="false"
+        android:background="@color/lightgray"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="60sp"
+            android:background="@color/darkgray"
+            android:gravity="left|top"
+            android:height="60sp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/menu"
+                android:layout_width="56sp"
+                android:layout_height="56sp"
+                android:background="@drawable/menu" />
+
+            <ImageView
+                android:id="@+id/prevWeek"
+                android:layout_width="56sp"
+                android:layout_height="56sp"
+                android:layout_gravity="center"
+                android:src="@drawable/left_arrow" >
+            </ImageView>
+
+            <TextView
+                android:id="@+id/currentWeek"
+                android:layout_width="fill_parent"
+                android:layout_height="60sp"
+                android:layout_weight="0.6"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#FFFFFF"
+                android:textSize="15dp">
+            </TextView>
+
+            <ImageView
+                android:id="@+id/nextWeek"
+                android:layout_width="56sp"
+                android:layout_height="56sp"
+                android:layout_gravity="center"
+                android:src="@drawable/right_arrow" >
+            </ImageView>
+
+            <Button
+                android:id="@+id/addEvent"
+                android:layout_width="56sp"
+                android:layout_height="56sp"
+                android:background="@drawable/add" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" >
+
+            <ImageView
+                android:id="@+id/calendarheader"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:layout_gravity="center"
+                android:src="@drawable/calendar_days"
+                android:baselineAlignBottom="false">
+            </ImageView>
+        </LinearLayout>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="52dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/sunday" />
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="52dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/monday" />
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="52dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/tuesday" />
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="52dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/wednesday" />
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="52dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/thursday" />
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="52dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/friday" />
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/saturday" />
+
+        </TableRow>
+        </TableLayout>
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/weeklyEditText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+        </ScrollView>
+    </LinearLayout>
+
+</RelativeLayout>

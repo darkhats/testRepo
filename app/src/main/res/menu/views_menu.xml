@@ -1,0 +1,31 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/daily_view"
+        android:title="Daily View"/>
+
+    <item
+        android:id="@+id/weekly_view"
+        android:title="Weekly View"/>
+
+    <item
+        android:id="@+id/monthly_view"
+        android:title="Monthly View"/>
+
+    <item
+        android:id="@+id/activity_delete_event"
+        android:title="Delete Event"/>
+
+    <item
+        android:id="@+id/choose_edit_event"
+        android:title="Edit Event"/>
+
+    <item
+        android:id="@+id/add_category"
+        android:title="Add Category"/>
+
+    <item
+        android:id="@+id/delete_category"
+        android:title="Delete Category"/>
+
+</menu>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_add_category"
+    tools:context="com.calendarapp.kaylagallatin.calendar.add_category">
+
+    <TableLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/add_event_table"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lightgray"
+        android:padding="5dip"
+        android:stretchColumns="1,2">
+        <TableRow>
+            <TextView
+                android:id="@+id/add_category_title_label"
+                android:text="Category Name to Add: "
+                style="@style/add_event_col"/>
+            <EditText
+                android:layout_weight="2"
+                android:id="@+id/add_category_title_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:id="@+id/add_category_color_label"
+                android:text="Category Color: "
+                style="@style/add_event_col"/>
+            <EditText
+                android:layout_weight="2"
+                android:id="@+id/add_category_color_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+        <TextView
+            android:id="@+id/add_category_color_option_label"
+            android:text="Category Color Options: "
+            style="@style/add_event_col"/>
+        <!-- Save Button -->
+        <Button
+            android:id="@+id/saveAddCategoryButton"
+            android:text="Save"
+            android:textColor="@color/black"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="fill_parent"
+            android:layout_height="60dip"
+            android:layout_weight="1"
+            android:background="@color/darkgray"
+            android:layout_marginLeft="2dip"
+            android:layout_marginRight="2dip"
+            android:layout_marginTop="20dip">
+        </Button>
+    </TableLayout>
+
+
+</RelativeLayout>
